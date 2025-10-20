@@ -8,6 +8,6 @@ ninja -j6
 cd ../../
 
 
-cd vscripts
+cd vane_sdk
 ./vane_sdk.sh
 cd ../
