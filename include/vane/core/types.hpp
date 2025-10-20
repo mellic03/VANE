@@ -1,10 +1,8 @@
 #pragma once
+#include <vane/types.hpp>
 
 namespace vane
 {
-    class Platform;
-    class NativeWindow;
-
     class Game;
     class GameScene;
     class GameObject;

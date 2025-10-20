@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(vane_graphics LANGUAGES CXX)
+project(vane_gfx LANGUAGES CXX)
 
 file(
     GLOB SOURCES

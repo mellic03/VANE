@@ -14,3 +14,4 @@ private:
     GameObject( GameScene*, int id );
     virtual ~GameObject() = default;
 };
+

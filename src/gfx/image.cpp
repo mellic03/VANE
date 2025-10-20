@@ -1,4 +1,4 @@
-#include <vane/graphics/image.hpp>
+#include <vane/gfx/image.hpp>
 
 using namespace vane;
 

@@ -1,20 +1,33 @@
-#include <vane/core/platform.hpp>
+#include <vane/platform/platform.hpp>
+#include <vane/core/log.hpp>
 #include <SDL2/SDL.h>
 
 using namespace vane;
 
 
-NativeWindow::NativeWindow( const std::string &title, int w, int h )
+NativeWindow::NativeWindow( const std::string &title, int W, int H )
 {
-    mWinSDL = (void*)SDL_CreateWindow(
-        title.c_str(),
-        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        w, h,
-        0
-    );
+    syslog log("NativeWindow::NativeWindow");
 
-    mCtxGL = SDL_GL_CreateContext((SDL_Window*)mWinSDL);
+    int x = SDL_WINDOWPOS_CENTERED;
+    int y = SDL_WINDOWPOS_CENTERED;
+    int w = (W > 0) ? W : SDL_WINDOW_FULLSCREEN;
+    int h = (H > 0) ? H : SDL_WINDOW_FULLSCREEN;
+    Uint32 flags = 0 | SDL_WINDOW_OPENGL;
 
+    mWinSDL = SDL_CreateWindow(title.c_str(), x, y, w, h, flags);
+    if (mWinSDL == NULL)
+    {
+        log("Error: \"%s\"", SDL_GetError());
+        exit(1);
+    }
+
+    mCtxGL = SDL_GL_CreateContext(mWinSDL);
+    if (mCtxGL == NULL)
+    {
+        log("Error: \"%s\"", SDL_GetError());
+        exit(1);
+    }
 }
 
 
