@@ -13,7 +13,7 @@ MouseIO::MouseIO()
     memset(mClicks,   0, sizeof(mClicks));
 }
 
-void MouseIO::update( const SDL_Event &e ) // ( int key, bool state )
+void MouseIO::update( const SDL_Event &e )
 {
     int idx = e.button.button;
 
@@ -23,8 +23,7 @@ void MouseIO::update( const SDL_Event &e ) // ( int key, bool state )
             VANE_ASSERT(false, "Invalid type!");
             break;
         case SDL_MOUSEMOTION:
-            mPos.x += e.motion.x;
-            mPos.y += e.motion.y;
+            SDL_GetMouseState(&mPos.x, &mPos.y);
             break;
         case SDL_MOUSEBUTTONDOWN:
             mPrevDown[idx] = mCurrDown[idx];
@@ -41,7 +40,6 @@ void MouseIO::update( const SDL_Event &e ) // ( int key, bool state )
             mDWheel.y += e.wheel.mouseY;
             break;
     }
-
 }
 
 ivec2 MouseIO::mousePos()

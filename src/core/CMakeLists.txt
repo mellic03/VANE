@@ -4,10 +4,11 @@ project(vane_core LANGUAGES CXX)
 
 file(
     GLOB SOURCES
-    "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
-    # "${CMAKE_CURRENT_SOURCE_DIR}/A.cpp"
-    # "${CMAKE_CURRENT_SOURCE_DIR}/B.cpp"
-    # "${CMAKE_CURRENT_SOURCE_DIR}/C.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/game.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/log.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/object.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/scene.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/scenegroup.cpp"
 )
 
 add_library(

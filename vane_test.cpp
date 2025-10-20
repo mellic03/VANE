@@ -6,14 +6,16 @@
 #include <GL/glew.h>
 
 
-
 class MyGame: public vane::Game
 {
 public:
     MyGame( vane::Engine &engine )
     :   Game(engine) {  };
 
-    virtual void update() final {  }
+    virtual void update() final
+    {
+
+    }
 };
 
 
@@ -28,7 +30,7 @@ int main( int argc, char **argv )
 
     while (true)
     {
-        glClearColor(1.0f, 1.0f, 0.5f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         engine.update();
@@ -42,3 +44,4 @@ int main( int argc, char **argv )
 
     return 0;
 }
+

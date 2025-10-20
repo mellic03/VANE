@@ -5,7 +5,8 @@
 using namespace vane;
 
 
-NativeWindow::NativeWindow( const std::string &title, int W, int H )
+NativeWindow::NativeWindow( Platform &plat, const std::string &title, int W, int H )
+:   mPlatform(plat)
 {
     syslog log("NativeWindow::NativeWindow");
 

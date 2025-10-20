@@ -11,16 +11,13 @@ GameScene::GameScene( const std::string &label )
     
 }
 
-
 GameObject *GameScene::createObject()
 {
     int   id  = int(mObjects.size());
     auto *obj = new GameObject(this, id);
     mObjects.insert(obj);
-
     return obj;
 }
-
 
 void GameScene::destroyObject( GameObject *obj )
 {

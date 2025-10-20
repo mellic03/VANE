@@ -17,12 +17,22 @@ Platform::Platform( vane::Engine &engine )
         exit(1);
     }
 
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
     mMainWin = createWindow("VANE", 512, 512);
     if (glewInit() != GLEW_OK)
     {
         log("Error initializing glew");
         exit(1);
     }
+
+    GLint major, minor;
+    glGetIntegerv(GL_MAJOR_VERSION, &major);
+    glGetIntegerv(GL_MINOR_VERSION, &minor);
+    log("Device supports OpenGL %d.%d", major, minor);
+    if (!(major>=4 && minor>=5))
+        log("OpenGL 4.5 required");
+    VANE_ASSERT(major>=4 && minor>=5, "OpenGL 4.5 required");
 }
 
 
@@ -58,7 +68,7 @@ NativeWindow *Platform::mainWindow()
 
 NativeWindow *Platform::createWindow( const std::string &title, int w, int h )
 {
-    auto *win = new NativeWindow(title, w, h);
+    auto *win = new NativeWindow(*this, title, w, h);
     mWindows.insert(win);
     return win;
 }

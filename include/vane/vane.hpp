@@ -34,14 +34,14 @@ public:
     Game *getGame();
 
     template <typename game_type>
-    game_type &getGame() { return *static_cast<game_type*>(getGame()); };
+    game_type &getGame() { return *static_cast<game_type*>(getGame()); }
 
 private:
     uint64_t mTicksCurr;
     uint64_t mTicksPrev;
     Platform mPlatform;
     Game    *mGame;
-    Engine(): mTicksCurr(0), mTicksPrev(0), mPlatform(*this), mGame(nullptr) {  };
+    Engine(): mTicksCurr(0), mTicksPrev(0), mPlatform(*this), mGame(nullptr) {  }
 
 };
 

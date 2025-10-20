@@ -19,7 +19,8 @@ public:
 
 private:
     friend class vane::Platform;
-    NativeWindow( const std::string &title, int w=0, int h=0 );
+    vane::Platform &mPlatform;
+    NativeWindow( Platform&, const std::string &title, int w=0, int h=0 );
 
 };
 
