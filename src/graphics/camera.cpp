@@ -1,3 +1,3 @@
-#include "camera.hpp"
+#include <vane/graphics/camera.hpp>
 
 

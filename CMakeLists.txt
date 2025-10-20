@@ -1,34 +1,41 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(vane LANGUAGES CXX)
+
 set(CMAKE_CXX_STANDARD "20")
-# set(MEMU_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/build/NesEmu")
-# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${MEMU_OUTPUT_DIR})
+set(CMAKE_CXX_FLAGS
+   "-Ofast \
+    -Wall -Wextra -Wpedantic -Werror \
+    -Wno-missing-field-initializers"
+)
 
 find_package(SDL2 REQUIRED)
+find_package(GLEW REQUIRED)
 
-# include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/src/core/")
-
-# add_executable(
-#     vane
-#     "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp"
-#     ${SOURCES}
-# )
 
 add_library(
     ${PROJECT_NAME} STATIC
     $<TARGET_OBJECTS:vane_core>
 )
 
-# target_link_libraries(
-#     ${PROJECT_NAME} PRIVATE
-#     vane_core
-# )
+target_link_libraries(
+    ${PROJECT_NAME} PUBLIC
+    SDL2::SDL2
+    SDL2::SDL2main
+    ${GLEW_LIBRARIES}
+)
 
-# file(
-#     COPY
-#         "${CMAKE_CURRENT_SOURCE_DIR}/data/"
-#     DESTINATION
-#         "${MEMU_OUTPUT_DIR}/"
-# )
+
+
+add_executable(
+    test
+    main.cpp
+)
+
+target_link_libraries(
+    test PUBLIC
+    vane
+)
+

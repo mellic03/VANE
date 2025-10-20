@@ -1,10 +1,11 @@
-#include "object.hpp"
+#include <vane/core/object.hpp>
 
 using namespace vane;
 
 
-GameObject::GameObject( int id )
-:   mId(id)
+GameObject::GameObject( GameScene *sc, int id )
+:   mScene(sc), mId(id)
 {
 
 }
+

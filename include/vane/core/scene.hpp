@@ -1,23 +1,22 @@
 #pragma once
+
+#include "types.hpp"
 #include <vector>
 #include <set>
-
-namespace vane
-{
-    class GameScene;
-    class GameObject;
-}
+#include <string>
 
 
 class vane::GameScene
 {
 public:
+    friend class vane::Game;
     GameObject *createObject();
     void destroyObject( GameObject* );
 
 private:
-    std::set<int> mFreeList;
+    std::string mLabel;
     std::set<GameObject*> mObjects;
+    GameScene( const std::string &label );
 
 };
 
