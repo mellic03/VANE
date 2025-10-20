@@ -11,8 +11,8 @@ class vane::PixelImage
 {
 public:
     static PixelImage load_bmp( const char* );
-    static PixelImage load_png( const char* );
-    static PixelImage load_jpg( const char* );
+    // static PixelImage load_png( const char* );
+    // static PixelImage load_jpg( const char* );
 
 private:
     // SDL_Surface *mSurface;

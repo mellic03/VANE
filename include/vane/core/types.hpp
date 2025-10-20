@@ -5,6 +5,12 @@ namespace vane
 {
     class Game;
     class GameScene;
-    class GameObject;
     class SceneGroup;
+ 
+    enum ObjAttr_: int;
+    class GameObject;
+    class PhysObject;
+    class AudioObject;
+    class ScriptObject;
+    
 }

@@ -1,0 +1,11 @@
+{
+    "init": {
+        "key": "value"
+    },
+
+    "directories": [
+        "foliage",
+        "font",
+        "noise"
+    ]
+}

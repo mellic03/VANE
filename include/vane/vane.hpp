@@ -1,14 +1,13 @@
 #pragma once
 
-#include <SDL2/SDL.h>
-#include <GL/glew.h>
-
-#include <vane/types.hpp>
+#include "types.hpp"
 
 #include "core/game.hpp"
 #include "core/object.hpp"
 #include "core/scene.hpp"
+#include "gfx/gfx.hpp"
 #include "platform/platform.hpp"
+
 
 namespace vane
 {

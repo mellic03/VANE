@@ -1,4 +1,0 @@
-[GameObject]
-PositionalObject
-AuditoryObject
-ScriptObject

@@ -1,5 +1,5 @@
 #include "./game.hpp"
-
+#include <vane/log.hpp>
 
 void MyGame::update()
 {
@@ -23,8 +23,13 @@ void MyGame::update()
 
 int MyGame::startup( int argc, char **argv )
 {
+    syslog log("MyGame::startup");
+
+    log("argc:     %d", argc);
+    for (int i=0; i<argc; i++)
+        log("argv[%d]: %s", argv[i]);
+
     auto &engine = mEngine;
-    auto &plat = engine.getPlatform();
     auto &game = engine.getGame<MyGame>();
 
     auto *menu = game.createScene("main_menu");

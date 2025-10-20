@@ -58,9 +58,7 @@ public:
     bool mouseClicked( Button, int n );
 
 private:
-    ivec2 mPos;
-    ivec2 mDPos;
-    ivec2 mDWheel;
+    ivec2 mPos, mDPos, mDWheel;
     bool mCurrDown[int(Button::NUM_BUTTONS)];
     bool mPrevDown[int(Button::NUM_BUTTONS)];
     int  mClicks[int(Button::NUM_BUTTONS)];

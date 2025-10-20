@@ -7,6 +7,7 @@ using namespace vane;
 
 
 MouseIO::MouseIO()
+:   mPos(0), mDPos(0), mDWheel(0)
 {
     memset(mCurrDown, 0, sizeof(mCurrDown));
     memset(mPrevDown, 0, sizeof(mPrevDown));
