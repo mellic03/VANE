@@ -1,9 +1,12 @@
 #!/bin/bash
 export CMAKE_POLICY_VERSION_MINIMUM=3.5
 
-mkdir -p build/CMake
+mkdir -p ./build/CMake
 rm -rf ./build/vaneproj
-rm -rf ../vaneproj/{example,include}
+
+rm -rf ./vaneproj/{src_example,include,lib}
+rm -rf ../vaneproj/{src_example,include,lib}
+
 
 cd build/CMake
 cmake -G Ninja ../../
@@ -12,4 +15,5 @@ cd ../../
 
 # tar -czvf ./gamefolder.tgz -C vaneproj/gamefolder
 
-cp -R ./build/vaneproj ../
+cp -R ./build/vaneproj/* ./vaneproj
+rm -rf ./vaneproj/src_example

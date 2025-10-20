@@ -1,5 +1,5 @@
 #include <vane/vane.hpp>
-#include <vane/log.hpp>
+#include <vane/core/log.hpp>
 #include <vane/vec.hpp>
 
 

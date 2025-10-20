@@ -7,7 +7,7 @@ namespace vane
     class GameScene;
     class SceneGroup;
  
-    enum ObjAttr_: int;
+    class GameObjectAttr;
     class GameObject;
     class PhysObject;
     class AudioObject;
