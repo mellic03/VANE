@@ -2,24 +2,19 @@
 
 #include "types.hpp"
 #include <map>
-#include <set>
 #include <string>
 
 
-namespace vane
+class vane::SceneGroup
 {
-    class SceneGroup
-    {
-    public:
-        GameScene *createScene( const std::string &label );
-        GameScene *getScene( const std::string &label );
-        void destroyScene( const std::string &label );
-        void destroyScene( vane::GameScene* );
-    private:
-        std::map<std::string, GameScene*> mScenes;
-    };
-}
-
+public:
+    GameScene *createScene( const std::string &label );
+    GameScene *getScene( const std::string &label );
+    void destroyScene( const std::string &label );
+    void destroyScene( vane::GameScene* );
+private:
+    std::map<std::string, GameScene*> mScenes;
+};
 
 
 

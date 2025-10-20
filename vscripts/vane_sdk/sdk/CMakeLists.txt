@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(vaneproj LANGUAGES CXX)
+project(vaneproject LANGUAGES CXX)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build/")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}/")
 set(CMAKE_CXX_STANDARD "20")
 
 find_package(SDL2 REQUIRED)

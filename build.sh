@@ -5,3 +5,9 @@ mkdir -p build/CMake
 cd build/CMake
 cmake -G Ninja ../../
 ninja -j6
+cd ../../
+
+
+cd vscripts
+./vane_sdk.sh
+cd ../

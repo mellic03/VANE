@@ -29,6 +29,8 @@ NativeWindow::NativeWindow( Platform &plat, const std::string &title, int W, int
         log("Error: \"%s\"", SDL_GetError());
         exit(1);
     }
+
+    log("resolution: %dx%d", w, h);
 }
 
 

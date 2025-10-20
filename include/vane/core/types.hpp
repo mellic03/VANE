@@ -6,4 +6,5 @@ namespace vane
     class Game;
     class GameScene;
     class GameObject;
+    class SceneGroup;
 }
