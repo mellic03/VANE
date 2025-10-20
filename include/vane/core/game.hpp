@@ -1,17 +1,18 @@
 #pragma once
 
 #include "types.hpp"
-#include <vane/core/scene.hpp>
+#include "scenegroup.hpp"
 
 
-class vane::Game: public vane::EngineRef, public vane::GameSceneGroup
+class vane::Game
+:   public vane::EngineRef,
+    public vane::SceneGroup
 {
 public:
     Game( vane::Engine &e ): EngineRef(e) {  };
     virtual ~Game() = default;
+
     virtual void update() = 0;
-
-protected:
-
+    virtual int startup(int, char**) = 0;
+    virtual int shutdown() = 0;
 };
-

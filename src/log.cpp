@@ -1,4 +1,4 @@
-#include <vane/core/log.hpp>
+#include <vane/log.hpp>
 #include <cassert>
 #include <cstdarg>
 #include <cstdio>

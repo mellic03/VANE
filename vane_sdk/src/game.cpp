@@ -1,23 +1,4 @@
-#include <vane/vane.hpp>
-#include <vane/log.hpp>
-#include <vane/vec.hpp>
-
-
-class MyGame: public vane::Game
-{
-public:
-    MyGame(vane::Engine &e): Game(e) {  };
-    virtual void update() final;
-    virtual int startup(int, char**) final;
-    virtual int shutdown() final;
-};
-
-
-int main( int argc, char **argv )
-{
-    return vane::vmain<MyGame>(argc, argv);
-}
-
+#include "./game.hpp"
 
 
 void MyGame::update()
@@ -58,4 +39,3 @@ int MyGame::shutdown()
     // Flush logs etc
     return 0;
 }
-

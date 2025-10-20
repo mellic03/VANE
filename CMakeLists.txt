@@ -28,5 +28,10 @@ target_link_libraries(
 
 file(
     COPY        "${CMAKE_CURRENT_SOURCE_DIR}/include/"
-    DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/build/include/"
+    DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/build/vane_sdk/include/"
+)
+
+file(
+    COPY        "${CMAKE_CURRENT_SOURCE_DIR}/vane_sdk/"
+    DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/build/vane_sdk/"
 )

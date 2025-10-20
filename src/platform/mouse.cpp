@@ -1,5 +1,5 @@
 #include <vane/platform/platform.hpp>
-#include <vane/core/log.hpp>
+#include <vane/log.hpp>
 #include <SDL2/SDL.h>
 #include <cstring>
 

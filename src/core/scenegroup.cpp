@@ -1,28 +1,28 @@
 #include <vane/core/scene.hpp>
-#include <vane/core/log.hpp>
+#include <vane/log.hpp>
 
 using namespace vane;
 
 
-GameScene *GameSceneGroup::createScene( const std::string &label )
+GameScene *SceneGroup::createScene( const std::string &label )
 {
     mScenes[label] = new GameScene(label);
     return mScenes[label];
 }
 
-GameScene *GameSceneGroup::getScene( const std::string &label )
+GameScene *SceneGroup::getScene( const std::string &label )
 {
     if (mScenes.contains(label))
         return mScenes[label];
     return nullptr;
 }
 
-void GameSceneGroup::destroyScene( const std::string &label )
+void SceneGroup::destroyScene( const std::string &label )
 {
     VANE_ASSERT(mScenes.contains(label), "Null scene!");
 }
 
-void GameSceneGroup::destroyScene( GameScene *scene )
+void SceneGroup::destroyScene( GameScene *scene )
 {
     VANE_ASSERT(scene != nullptr, "Null scene!");
     std::string label = scene->mLabel;

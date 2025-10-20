@@ -4,6 +4,17 @@
 using namespace vane;
 
 
+Engine::Engine()
+:   mTicksCurr(0),
+    mTicksPrev(0),
+    mPlatform(*this),
+    mGame(nullptr),
+    mRunning(true)
+{
+
+}
+
+
 void Engine::update()
 {
     mTicksPrev = mTicksCurr;
@@ -11,6 +22,16 @@ void Engine::update()
 
     mPlatform.update();
     mGame->update();
+}
+
+void Engine::shutdown()
+{
+    mRunning = false;
+}
+
+bool Engine::running()
+{
+    return mRunning;
 }
 
 double Engine::tsec()

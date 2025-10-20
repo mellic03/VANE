@@ -5,13 +5,11 @@
 
 class vane::GameObject
 {
-public:
-    friend class vane::GameScene;
+protected:
+    GameScene *mScene;
 
 private:
-    GameScene *mScene;
-    int        mId;
-    GameObject( GameScene*, int id );
+    friend class GameScene;
+    GameObject( GameScene *sc ): mScene(sc) {  }
     virtual ~GameObject() = default;
 };
-
