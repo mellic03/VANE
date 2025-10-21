@@ -1,21 +1,17 @@
 cmake_minimum_required(VERSION 3.5)
 
-set(
-    CMAKE_RUNTIME_OUTPUT_DIRECTORY
-    "${CMAKE_CURRENT_SOURCE_DIR}/build/"
-)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/vane_sdk/")
 
+file(COPY "${CMAKE_SOURCE_DIR}/include/"
+     DESTINATION "${CMAKE_SOURCE_DIR}/build/vane_sdk/include/"
+)
+file(COPY "${CMAKE_SOURCE_DIR}/vane_sdk/example/"
+     DESTINATION "${CMAKE_SOURCE_DIR}/build/vane_sdk/example/"
+)
 file(
-    COPY "${CMAKE_CURRENT_SOURCE_DIR}/gamefolder/"
-    DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/build/"
+    ARCHIVE_CREATE
+    OUTPUT "${CMAKE_SOURCE_DIR}/build/vane_sdk/vanepkg.tar"
+    PATHS  "./"
+    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/vanepkg/"
+    FORMAT "gnutar"
 )
-
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include/")
-link_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/")
-
-
-# ./src/
-# add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/src/")
-
-# ./src_example/
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/src_example/")

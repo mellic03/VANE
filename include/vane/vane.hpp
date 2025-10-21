@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.hpp"
-
+#include "core/cfgparser.hpp"
 #include "core/game.hpp"
 #include "core/object.hpp"
 #include "core/scene.hpp"
@@ -29,9 +29,6 @@ namespace vane
 class vane::Engine
 {
 public:
-    template <typename game_type>
-    static Engine *createEngine();
-
     Engine( const Engine& ) = delete;
     Engine( Engine&& ) = delete;
     Engine &operator=( Engine&& ) = delete;
@@ -61,15 +58,6 @@ private:
     ~Engine() {  }
 
 };
-
-
-template <typename game_type>
-vane::Engine *vane::Engine::createEngine()
-{
-    auto *e = new Engine();
-    e->mGame = new game_type(*e);
-    return e;
-}
 
 
 

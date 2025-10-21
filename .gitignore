@@ -1,6 +1,5 @@
 .directory
 .vscode
 build
-
-vaneproj/*build
-vaneproj/gamefolder
+external/shaderc
+vanepkg/vane/bin/glslc

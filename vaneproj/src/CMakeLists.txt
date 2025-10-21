@@ -23,3 +23,8 @@ target_link_libraries(
     GLEW::GLEW
     OpenGL::GL
 )
+
+set_target_properties(
+    ${PROJECT_NAME} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/vaneproj/"
+)

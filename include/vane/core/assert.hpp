@@ -2,23 +2,25 @@
 
 #include <cassert>
 #include <cstdio>
-#include <iostream>
 
 
 #define VANE_DEBUG
 
 #ifdef VANE_DEBUG
-    #define VANE_ASSERT(Cndtn, Mesge) \
+    #define STR_HELPER(x) #x
+    #define STR(x) STR_HELPER(x)
+
+    #define VANE_ASSERT(Cndtn, Mesge, ...) \
     do { \
-        if (! (Cndtn)) { \
-            std::cerr << "Assertion `" #Cndtn "` failed in " << __FILE__ \
-                        << " line " << __LINE__ << ": " << Mesge << std::endl; \
-            std::terminate(); \
+        if (!(Cndtn)) { \
+            fprintf(stderr, \
+                "Assertion failed: (%s)\nFile: %s\nLine: %s\nMessage: " Mesge "\n", \
+                #Cndtn, __FILE__, STR(__LINE__), ##__VA_ARGS__); \
+            fflush(stderr); \
+            exit(1); \
         } \
     } while (false)
-
 #else
-    #define VANE_ASSERT(Cndtn, Mesge) do { } while (false)
-
+    #define VANE_ASSERT(Cndtn, Mesge, ...) do { } while (false)
 #endif
 

@@ -3,7 +3,7 @@
 using namespace vane;
 
 
-GameObjectAttr::GameObjectAttr( GameObject *obj )
+ObjAttr::ObjAttr( GameObject *obj )
 :   mObject(obj)
 {
 

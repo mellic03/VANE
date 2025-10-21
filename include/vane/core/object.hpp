@@ -1,43 +1,62 @@
 #pragma once
 
 #include "types.hpp"
-// #include "objattr.hpp"
 #include <vane/vec.hpp>
 #include <vector>
 #include <string>
 
 
-class vane::GameObjectAttr
+class vane::GameObject
+{
+private:
+    std::vector<ObjAttr*> mAttrs;
+
+protected:
+    GameScene *mScene;
+
+public:
+    GameObject( GameScene* );
+    virtual ~GameObject() = default;
+
+    template <typename attr_type, typename... Args>
+    void giveAttr( Args... args )
+    {
+        mAttrs.push_back(new attr_type(this, args...));
+    }
+
+};
+
+
+class vane::ObjAttr
 {
 public:
-    GameObjectAttr( GameObject *obj );
-    virtual ~GameObjectAttr() = default;
+    ObjAttr( GameObject* );
+    virtual ~ObjAttr() = default;
 
 protected:
     GameObject *mObject;
 };
 
 
-class vane::GameObject
+class vane::ObjAttrTransform: public ObjAttr
 {
-private:
-    std::vector<GameObjectAttr*> mAttrs;
-
 public:
-    template <typename attr_type, typename... Args>
-    void giveAttr( Args&&... args )
-    {
-        mAttrs.push_back(new attr_type(this, std::move(args...)));
-    }
+    vec3 mPos, mVel, mAcc;
 
-protected:
-    friend class GameScene;
-    GameScene *mScene;
-
-    GameObject( GameScene* );
-    virtual ~GameObject() = default;
-
+    ObjAttrTransform( GameObject *obj, const vec3 &pos = vec3(0.0f) )
+    :   ObjAttr(obj), mPos(pos), mVel(0.0f), mAcc(0.0f) {  }
 };
+
+
+
+class vane::ObjAttrRigidBody: public ObjAttrTransform
+{
+public:
+    ObjAttrRigidBody( GameObject *obj, const vec3 &pos = vec3(0.0f) )
+    :   ObjAttrTransform(obj, pos) {  }
+};
+
+
 
 
 

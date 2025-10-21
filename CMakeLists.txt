@@ -1,17 +1,11 @@
 cmake_minimum_required(VERSION 3.5)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build")
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/vaneproj/lib")
-
-file(
-    COPY "${CMAKE_SOURCE_DIR}/vane_sdk/"
-    DESTINATION "${CMAKE_SOURCE_DIR}/build/vaneproj/"
-)
-
-file(
-    COPY "${CMAKE_SOURCE_DIR}/include/"
-    DESTINATION "${CMAKE_SOURCE_DIR}/build/vaneproj/include/"
-)
+set(VANE_SDK_DIRECTORY "${CMAKE_SOURCE_DIR}/build/vane_sdk/")
+set(VANE_PROJ_DIRECTORY "${CMAKE_SOURCE_DIR}/build/vaneproj/")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${VANE_SDK_DIRECTORY}/lib/")
 
 include_directories("${CMAKE_SOURCE_DIR}/include")
+
 add_subdirectory("${CMAKE_SOURCE_DIR}/src/")
+add_subdirectory("${CMAKE_SOURCE_DIR}/vane_sdk/")
+add_subdirectory("${CMAKE_SOURCE_DIR}/vaneproj/")

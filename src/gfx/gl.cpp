@@ -37,6 +37,11 @@ void gl::GetDoublei_v( GLenum target, GLuint index, GLdouble *data )
 void gl::GetInteger64i_v( GLenum target, GLuint index, GLint64 *data )
 { IDK_GLCALL( glGetInteger64i_v(target, index, data); ) }
 
+void gl::GetProgramiv( GLuint program, GLenum pname, GLint *param )
+{ IDK_GLCALL( glGetProgramiv(program, pname, param); )
+
+
+}
 
 
 
@@ -169,8 +174,13 @@ GLuint gl::CreateProgram()
 GLuint gl::CreateShader( GLenum type )
 { IDK_GLCALL( return glCreateShader(type); ) }
 
-void gl::ShaderSource( GLuint shader, GLsizei count, const GLchar *const *string, const GLint *length )
+void gl::ShaderSource( GLuint shader, GLsizei count, const GLchar *const *string,
+                       const GLint *length )
 { IDK_GLCALL( glShaderSource(shader, count, string, length); ) }
+
+void gl::ShaderBinary( GLsizei count, const GLuint *shaders, GLenum binaryformat,
+                       const void *binary, GLsizei length )
+{ IDK_GLCALL( glShaderBinary(count, shaders, binaryformat, binary, length); ) }
 
 void gl::CompileShader( GLuint shader )
 { IDK_GLCALL( glCompileShader(shader); ) }
@@ -181,11 +191,8 @@ void gl::GetShaderiv( GLuint shader, GLenum pname, GLint *param )
 void gl::GetShaderInfoLog( GLuint shader, GLsizei bufSize, GLsizei *length, GLchar *infoLog )
 { IDK_GLCALL( glGetShaderInfoLog(shader, bufSize, length, infoLog); ) }
 
-void
-gl::AttachShader( GLuint program, GLuint shader )
-{
-    IDK_GLCALL( glAttachShader(program, shader); )
-}
+void gl::AttachShader( GLuint program, GLuint shader )
+{ IDK_GLCALL( glAttachShader(program, shader); ) }
 
 void gl::DeleteShader( GLuint shader )
 { IDK_GLCALL( glDeleteShader(shader); ) }

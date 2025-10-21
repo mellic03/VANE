@@ -7,10 +7,9 @@ namespace vane
     class GameScene;
     class SceneGroup;
  
-    class GameObjectAttr;
     class GameObject;
-    class PhysObject;
-    class AudioObject;
-    class ScriptObject;
+    class ObjAttr;
+    class ObjAttrTransform;
+    class ObjAttrRigidBody;
     
 }

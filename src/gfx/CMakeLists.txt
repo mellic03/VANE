@@ -8,6 +8,7 @@ file(
     "${CMAKE_CURRENT_SOURCE_DIR}/gl.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/image.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/render.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/shader.cpp"
 )
 
 add_library(

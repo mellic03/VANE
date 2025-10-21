@@ -1,5 +1,7 @@
 #include "./game.hpp"
 #include <vane/core/log.hpp>
+#include <vane/core/cfgparser.hpp>
+#include <vane/gfx/shader.hpp>
 
 void MyGame::update()
 {
@@ -33,7 +35,18 @@ int MyGame::startup( int argc, char **argv )
     auto &game = engine.getGame<MyGame>();
 
     auto *menu = game.createScene("main_menu");
-          menu->createObject();
+    auto *obj = menu->createObject();
+          obj->giveAttr<vane::ObjAttrTransform>(vane::vec3(5.0f, 0.0f, 0.0f));
+
+    // vane::gfx::ShaderArchive A;
+    // // A.openArchive("spirv_archive.bin");
+    // A.compileSPIRV("vane/shader/quad.vert", "quad.vert.spv");
+    // A.compileSPIRV("vane/shader/quad.frag", "quad.frag.spv");
+    // A.addFile("quad.vert.spv");
+    // A.addFile("quad.frag.spv");
+    // std::system("rm quad.vert.spv");
+    // std::system("rm quad.frag.spv");
+    // A.saveArchive("spirv_archive.bin");
 
     return 0;
 }

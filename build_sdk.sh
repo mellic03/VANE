@@ -1,5 +1,6 @@
 #!/bin/bash
 export CMAKE_POLICY_VERSION_MINIMUM=3.5
+export VANE_BUILD_SDK=YES
 
 mkdir -p ./build/CMake
 cd build/CMake

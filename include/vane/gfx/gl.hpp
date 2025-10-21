@@ -58,6 +58,8 @@ namespace gl
     void GetDoublei_v( GLenum target, GLuint index, GLdouble *data );
     void GetInteger64i_v( GLenum target, GLuint index, GLint64 *data );
 
+    void GetProgramiv( GLuint program, GLenum pname, GLint *param );
+
     void GenVertexArrays  ( GLsizei n, GLuint *arrays );
     void GenBuffers       ( GLsizei n, GLuint *buffers );
     void GenTextures      ( GLsizei n, GLuint *textures );
@@ -75,6 +77,9 @@ namespace gl
 
     void ShaderSource( GLuint shader, GLsizei count, const GLchar *const *string,
                        const GLint *length );
+
+    void ShaderBinary( GLsizei count, const GLuint *shaders, GLenum binaryformat,
+                       const void *binary, GLsizei length );
 
     void CompileShader    ( GLuint shader );
     void GetShaderiv      ( GLuint shader, GLenum pname, GLint *param );
