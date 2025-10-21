@@ -1,6 +1,6 @@
 #include <vane/platform/platform.hpp>
 #include <vane/core/assert.hpp>
-#include <SDL2/SDL.h>
+#include <vane/SDL.h>
 #include <cstring>
 
 using namespace vane;

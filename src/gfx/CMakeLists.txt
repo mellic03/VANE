@@ -4,6 +4,7 @@ project(vane_gfx LANGUAGES CXX)
 
 file(
     GLOB SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/GL/glew.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/camera.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/gl.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/image.cpp"

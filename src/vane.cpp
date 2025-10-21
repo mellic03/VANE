@@ -1,5 +1,5 @@
 #include <vane/vane.hpp>
-#include <SDL2/SDL.h>
+#include <vane/SDL.h>
 
 using namespace vane;
 
