@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.11)
 
 project(vgame LANGUAGES CXX)
 
@@ -13,10 +13,9 @@ add_executable(
 
 target_link_libraries(
     ${PROJECT_NAME} PUBLIC
-    vane
-    SDL2::SDL2-static
-    SDL2::SDL2main
-    ${VANE_GLEW_LIBRARIES}
+    "${VANE_LIBRARIES}"
+    "${SDL2_LIBRARIES}"
+    "${GLEW_LIBRARIES}"
     OpenGL::GL
 )
 

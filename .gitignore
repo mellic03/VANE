@@ -1,10 +1,8 @@
 .directory
 .vscode
 build
-
 external/shaderc
-external/SDL2-2.32.10
-
+include/GL
 include/SDL2
-
+lib
 vanepkg/vane/bin/glslc

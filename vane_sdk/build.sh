@@ -1,5 +1,5 @@
 #!/bin/bash
-export CMAKE_POLICY_VERSION_MINIMUM=3.5
+export CMAKE_POLICY_VERSION_MINIMUM=3.11
 
 mkdir -p build/CMake
 cd build/CMake

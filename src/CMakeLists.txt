@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.11)
 
 project(vane LANGUAGES CXX)
 
@@ -19,10 +19,9 @@ add_library(
     $<TARGET_OBJECTS:vane_platform>
 )
 
-target_link_libraries(
-    ${PROJECT_NAME} PUBLIC
-    SDL2::SDL2-static
-    SDL2::SDL2main
-    ${VANE_GLEW_LIBRARIES}
-    OpenGL::GL
-)
+# target_link_libraries(
+#     ${PROJECT_NAME} PUBLIC
+#     ${SDL2_LIBRARIES}
+#     ${GLEW_LIBRARIES}
+#     OpenGL::GL
+# )
