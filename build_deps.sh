@@ -5,7 +5,7 @@ cd external
 
 mkdir -p SDL2/build
 cd SDL2/build
-cmake -G Ninja ../
+cmake -DCMAKE_BUILD_TYPE=RELEASE -G Ninja ../
 ninja -j12
 cd ../../
 

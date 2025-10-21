@@ -2,4 +2,7 @@
 .vscode
 build
 external/shaderc
+include/GL
+include/SDL2
+lib
 vanepkg/vane/bin/glslc

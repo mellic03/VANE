@@ -1,55 +1,147 @@
 #include <vane/vfs/vfs.hpp>
 #include <cstdlib>
+#include <cstring>
 
 using namespace vane;
 
 
-vfs::FileSystem::FileSystem( size_t blocks )
-:   mTable((RootTable*)malloc(BLOCK_SIZE*blocks))
+vfs::FileSystem::FileSystem( size_t nblocks )
 {
-    
-}
+    using RT = RootTable;
 
-vfs::FileNode *vfs::FileSystem::find( const std::string &name )
-{
-    uint8 *base = (uint8*)(mTable->files);
-    FileNode *beg = (FileNode*)(base);
-    FileNode *end = (FileNode*)(base + sizeof(mTable->files));
+    mTable = (RootTable*)malloc(
+          sizeof(RT::nblocks) + sizeof(RT::padding)
+        + sizeof(RT::files) + nblocks*sizeof(DataBlock)
+    );
 
-    for (FileNode *file=beg; file<end; file++)
+    uint8 *fbase = (uint8*)(mTable->files);
+    mFileBeg = (FileNode*)(fbase);
+    mFileEnd = (FileNode*)(fbase + sizeof(mTable->files));
+
+    uint8 *dbase = (uint8*)(mTable->blocks);
+    mDataBeg = (DataBlock*)(dbase);
+    mDataEnd = (DataBlock*)(dbase + nblocks*sizeof(DataBlock));
+
+    for (FileNode *F=mFileBeg; F<mFileEnd; F++)
     {
-        if (std::string(file->name) == name)
-        {
-            return file;
-        }
+        memset(F, '\0', sizeof(FileNode));
     }
 
-    return nullptr;
+    for (DataBlock *B=mDataBeg; B<mDataEnd; B++)
+    {
+        B->avail = 1;
+    }
 }
+
 
 vfs::FileNode *vfs::FileSystem::open( const std::string &name )
 {
-    FileNode *file = find(name);
+    FileNode *file = findFileNode(name);
     if (file) return file;
+    return newFileNode(name);
+}
 
-    // uint8 *base = (uint8*)(mTable->files);
-    // FileNode *beg = (FileNode*)(base);
-    // FileNode *end = (FileNode*)(base + sizeof(mTable->files));
 
-    // for (FileNode *file=beg; file<end; file++)
-    // {
+size_t vfs::FileSystem::write( FileNode *F, const void *src, size_t size )
+{
+    if (F->nblocks == 0)
+    {
+        uint32 idx = newDataBlock();
+        F->nblocks   = 1;
+        F->blocks[0] = idx;
+    }
 
-    // }
+    uint8 *srcpos = (uint8*)src;
+    uint8 *srcend = srcpos + size;
+    size_t total  = 0;
+
+    while (srcpos<srcend && F->nblocks<22)
+    {
+        uint32 blockno = F->wtpos / sizeof(DataBlock);
+        if (blockno >= F->nblocks)
+        {
+            F->blocks[blockno] = newDataBlock();
+            F->nblocks += 1;
+        }
+
+        uint32 idx = F->blocks[blockno];
+        uint32 off = F->wtpos % sizeof(DataBlock);
+
+        auto *B = (mTable->blocks + idx);
+        B->data[off] = *(srcpos++);
+
+        F->wtpos++;
+    }
+
+    return total;
+}
+
+
+size_t vfs::FileSystem::read( FileNode *F, void *dst, size_t size )
+{
+    uint8 *dstpos = (uint8*)dst;
+    uint8 *dstend = dstpos + size;
+    size_t total  = 0;
+
+    while ((dstpos<dstend))
+    {
+        uint32 blockno = F->rdpos / sizeof(DataBlock);
+        if (blockno >= F->nblocks)
+        {
+            break;
+        }
+
+        uint32 idx = F->blocks[blockno];
+        uint32 off = F->rdpos % sizeof(DataBlock);
+
+        auto *B = (mTable->blocks + idx);
+        *(dstpos++) = B->data[off];
+
+        F->rdpos++;
+    }
+
+    return total;
+}
+
+
+
+vfs::FileNode *vfs::FileSystem::findFileNode( const std::string &name )
+{
+    for (FileNode *F=mFileBeg; F<mFileEnd; F++)
+    {
+        if (std::string(F->name) == name)
+        {
+            return F;
+        }
+    }
     return nullptr;
 }
 
-size_t vfs::FileSystem::write( const std::string &name, const void *src, size_t size )
-{
 
+vfs::FileNode *vfs::FileSystem::newFileNode( const std::string &name )
+{
+    for (FileNode *F=mFileBeg; F<mFileEnd; F++)
+    {
+        if (F->name[0] == '\0')
+        {
+            strncpy(F->name, name.c_str(), sizeof(F->name)-1);
+            return F;
+        }
+    }
+    return nullptr;
 }
 
-size_t vfs::FileSystem::read( const std::string &name, void *dst, size_t size )
-{
 
+uint32 vfs::FileSystem::newDataBlock()
+{
+    for (DataBlock *B=mDataBeg; B<mDataEnd; B++)
+    {
+        if (B->avail == 1)
+        {
+            B->avail = 0;
+            return (B - mDataBeg) / sizeof(DataBlock);
+        }
+    }
+    return 0;
 }
 

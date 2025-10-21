@@ -2,6 +2,7 @@
 #include <vane/core/log.hpp>
 #include <vane/core/cfgparser.hpp>
 #include <vane/gfx/shader.hpp>
+#include <vane/vfs/vfs.hpp>
 
 void MyGame::update()
 {
@@ -47,6 +48,23 @@ int MyGame::startup( int argc, char **argv )
     // std::system("rm quad.vert.spv");
     // std::system("rm quad.frag.spv");
     // A.saveArchive("spirv_archive.bin");
+
+    // using namespace vane;
+    // vfs::FileSystem fs(512);
+
+    // const char txt[] = "No logs here...";
+
+    // auto *file = fs.open("/home/log.txt");
+    // file->wtpos = 0;
+    // fs.write(file, txt, sizeof(txt));
+
+    // char buf[256];
+    // memset(buf, 0, 256);
+
+    // file->rdpos = 0;
+    // fs.read(file, buf, sizeof(txt));
+
+    // log("vfs: \"%s\"", buf);
 
     return 0;
 }

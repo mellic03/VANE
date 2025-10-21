@@ -8,6 +8,7 @@ set(CMAKE_CXX_FLAGS "-Ofast -Wall -Wextra -Wpedantic -Werror -Wno-missing-field-
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/core/")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/gfx/")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/platform/")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vfs/")
 
 add_library(
     ${PROJECT_NAME} STATIC
@@ -17,6 +18,7 @@ add_library(
     $<TARGET_OBJECTS:vane_core>
     $<TARGET_OBJECTS:vane_gfx>
     $<TARGET_OBJECTS:vane_platform>
+    $<TARGET_OBJECTS:vane_vfs>
 )
 
 # target_link_libraries(
