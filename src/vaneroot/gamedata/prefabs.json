@@ -1,0 +1,11 @@
+{
+    "Prefabs": [
+        {
+            "name": "RigidBody",
+            "attrs": [
+                "ObjAttrTransform",
+                "ObjAttrRigidBody"
+            ]
+        }
+    ]
+}

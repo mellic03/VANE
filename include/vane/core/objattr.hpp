@@ -8,7 +8,7 @@
 
 // namespace vane
 // {
-//     class ObjectComponent
+//     class ObjAttr
 //     {
 //     public:
         

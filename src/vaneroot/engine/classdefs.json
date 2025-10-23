@@ -1,0 +1,30 @@
+{
+    "ClassDefs": [
+
+        {
+            "namespace": "vane",
+            "classname": "GameObject",
+            "members": [
+                { "acc": "vec3" },
+                { "vel": "vec3" },
+                { "pos": "vec3" }
+            ]
+        },
+
+        {
+            "name": "AuditoryObject",
+            "baseclass": "vane::GameObject",
+            "members": [
+                { "filepath": "std::string" }
+            ]
+        },
+
+        {
+            "name": "ScriptObject",
+            "baseclass": "vane::GameObject",
+            "members": [
+                { "filepath": "std::string" }
+            ]
+        }
+    ]
+}

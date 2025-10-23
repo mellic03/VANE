@@ -1,0 +1,50 @@
+{
+    "ClassDefs": [
+        {   "name": "vec1",
+            "members": [
+                { "x": "float" }
+            ]
+        },
+
+        {   "name": "vec2",
+            "members": [
+                { "x": "float" },
+                { "y": "float" }
+            ]
+        },
+
+        {   "name": "vec3",
+            "members": [
+                { "x": "float" },
+                { "y": "float" },
+                { "z": "float" }
+            ]
+        },
+
+        {
+            "name": "PositionalObject",
+            "baseclass": "vane::GameObject",
+            "members": [
+                { "acc": "vec3" },
+                { "vel": "vec3" },
+                { "pos": "vec3" }
+            ]
+        },
+
+        {
+            "name": "AuditoryObject",
+            "baseclass": "vane::GameObject",
+            "members": [
+                { "filepath": "std::string" }
+            ]
+        },
+
+        {
+            "name": "ScriptObject",
+            "baseclass": "vane::GameObject",
+            "members": [
+                { "filepath": "std::string" }
+            ]
+        }
+    ]
+}
