@@ -54,7 +54,13 @@ bool check_args( int argc, char **argv )
 
         else if (A=="-l" || A=="--list")
         {
+            inpath = fs::path(argvec[++i]);
             listmode = true;
+        }
+    
+        else
+        {
+            return false;
         }
     }
 
@@ -83,6 +89,9 @@ int main( int argc, char **argv )
     if (listmode == true)
     {
         PA.load(inpath.string());
+        PA.for_each([](const vane::PkgArchive::FileHandle &F) {
+            printf("%s\n", F.name.c_str());
+        });
         return 0;
     }
 

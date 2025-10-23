@@ -39,6 +39,18 @@ static uint32_t ndigits( uint32_t x )
 
 
 
+void PkgArchive::for_each( std::function<void(const FileHandle&)> fn )
+{
+    auto *base = &mBuf[0];
+    auto *head = (RootHeader*)(base);
+    auto *ftab = (FileTableEntry*)(base + head->offset);
+
+    for (auto *F=ftab; F<ftab+head->count; F++)
+    {
+        fn(FileHandle(F->name, base+F->offset, F->size));
+    }
+}
+
 
 void PkgArchive::add( const std::string &name, const void *src, size_t size )
 {
@@ -80,8 +92,8 @@ void PkgArchive::save( const std::string &path )
 void PkgArchive::load( const std::string &path )
 {
     // syslog log("PkgArchive::load");
-    auto data = vane::loadRaw(path);
-    _printFileTable((uint8_t*)(&data[0]));
+    mBuf = vane::loadRaw(path);
+    // _printFileTable((uint8_t*)(&mBuf[0]));
 }
 
 
