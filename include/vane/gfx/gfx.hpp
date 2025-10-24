@@ -1,22 +1,7 @@
 #pragma once
 
 #include "camera.hpp"
-#include "gl.hpp"
 #include "image.hpp"
 #include "render.hpp"
+#include "srv.hpp"
 
-
-namespace vane::gfx
-{
-    class SceneNode;
-}
-
-
-class vane::gfx::SceneNode
-{
-public:
-    
-
-private:
-
-};

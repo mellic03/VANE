@@ -1,30 +1,33 @@
 cmake_minimum_required(VERSION 3.11)
+
 project(vane_devel)
 
-if(DEFINED ENV{VANE_OUTPUT_DIR})
-    set(VANE_OUTPUT_DIR "${CMAKE_SOURCE_DIR}/$ENV{VANE_OUTPUT_DIR}")
-    message("VANE_OUTPUT_DIR=${VANE_OUTPUT_DIR}")
+find_package(OpenGL REQUIRED)
+add_subdirectory("${CMAKE_SOURCE_DIR}/external" EXCLUDE_FROM_ALL)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(VANE_OUTPUT_DIR "${CMAKE_BINARY_DIR}/../vane_debug")
+    set(VANE_COMPILE_OPTIONS -Wall -Wextra -Wpedantic -Werror -Wno-missing-field-initializers)
 else()
-    message(FATAL_ERROR "VANE_OUTPUT_DIR must be set!")
+    set(VANE_OUTPUT_DIR "${CMAKE_BINARY_DIR}/../vane_release")
+    set(VANE_COMPILE_OPTIONS -Wall -Wextra -Wpedantic -Werror -Wno-missing-field-initializers)
 endif()
 
-set(VANE_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include/")
-set(VANE_LIBRARY_DIR "${CMAKE_SOURCE_DIR}/lib/")
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${VANE_LIBRARY_DIR}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${VANE_OUTPUT_DIR}/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${VANE_OUTPUT_DIR}/bin")
 
-set(VANE_LIBRARIES "${VANE_LIBRARY_DIR}/libvane.a")
-set(SDL2_LIBRARIES "${VANE_LIBRARY_DIR}/libSDL2.a" "${VANE_LIBRARY_DIR}/libSDL2main.a")
-set(GLEW_LIBRARIES "${VANE_LIBRARY_DIR}/libGLEW.a")
-set(OPENGL_LIBRARIES "OpenGL::GL")
+if(TARGET SDL2::SDL2main)
+    set(VANE_SDL2_OPENGL_LIBRARIES GLEW OpenGL::GL SDL2::SDL2main SDL2::SDL2)
+else()
+    set(VANE_SDL2_OPENGL_LIBRARIES GLEW OpenGL::GL SDL2::SDL2)
+endif()
 
-set(GLEW_USE_STATIC_LIBS ON)
-add_definitions(-DGLEW_STATIC)
-find_package(OpenGL REQUIRED)
 
-include_directories("${VANE_INCLUDE_DIR}")
-link_directories("${VANE_LIBRARY_DIR}")
+include_directories("${CMAKE_SOURCE_DIR}/include/")
+include_directories("${CMAKE_SOURCE_DIR}/external/GLEW/include/")
 
-add_subdirectory("${CMAKE_SOURCE_DIR}/external/")
 add_subdirectory("${CMAKE_SOURCE_DIR}/src/")
 add_subdirectory("${CMAKE_SOURCE_DIR}/vaneproj/")
+
+
+file(COPY "${CMAKE_SOURCE_DIR}/vaneroot/" DESTINATION "${VANE_OUTPUT_DIR}/")

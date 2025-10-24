@@ -12,7 +12,7 @@ private:
     std::vector<GameService*> mServices;    
 
 public:
-    GameWorld( size_t obj_limit )
+    GameWorld( size_t obj_limit=512 )
     {
         mObjects.reserve(obj_limit);
     }
@@ -26,3 +26,4 @@ public:
     bool killService( GameService* );
 
 };
+

@@ -36,8 +36,8 @@ namespace vane
 {
     class GameWorld;
     class GameObject;
-    class ComponentTransform;
-    class ComponentRigidBody;
+    class Transform;
+    class RigidBody;
 }
 
 
@@ -52,7 +52,8 @@ public:
     GameObject( GameWorld &W ): Reliant<GameWorld>(W) {  }
     virtual ~GameObject() = default;
 
-    void giveComponent( Component *c ) { mAttrs.push_back(c); }
+    template <typename T, typename... Args>
+    void giveComponent( Args&&... args ) { mAttrs.push_back(new T(*this, args...)); }
 
 private:
 
@@ -61,20 +62,20 @@ private:
 
 
 
-class vane::ComponentTransform: public GameObject::Component
+class vane::Transform: public GameObject::Component
 {
 public:
     vec3 mPos, mVel, mAcc;
 
-    ComponentTransform( GameObject &obj, const vec3 &p = vec3(0.0f) )
+    Transform( GameObject &obj, const vec3 &p = vec3(0.0f) )
     :   Component(obj), mPos(p), mVel(0.0f), mAcc(0.0f) {  }
 };
 
 
-class vane::ComponentRigidBody: public GameObject::Component
+class vane::RigidBody: public GameObject::Component
 {
 public:
-    ComponentRigidBody( GameObject &obj )
+    RigidBody( GameObject &obj )
     :   Component(obj) {  }
 };
 

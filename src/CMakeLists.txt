@@ -1,36 +1,19 @@
 cmake_minimum_required(VERSION 3.11)
 
-if(NOT DEFINED VANE_OUTPUT_DIR)
-    message(FATAL_ERROR "VANE_OUTPUT_DIR must be set!")
-endif()
+add_compile_options(--std=c++20 ${VANE_COMPILE_OPTIONS})
+
+add_library(vane_core OBJECT)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/core/")
+
+add_library(vane_full STATIC $<TARGET_OBJECTS:vane_core>)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/dsa/")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/gfx/")
+# add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/tooling/")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/util/")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vfs/")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/world/")
+target_link_libraries(vane_full PUBLIC vane_core ${VANE_SDL2_OPENGL_LIBRARIES})
 
 
-project(vane LANGUAGES CXX)
-
-set(CMAKE_CXX_STANDARD "20")
-set(CMAKE_CXX_FLAGS "-Ofast -Wall -Wextra -Wpedantic -Werror -Wno-missing-field-initializers")
-
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vane/core/")
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vane/dsa/")
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vane/gfx/")
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vane/platform/")
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vane/tooling/")
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vane/util/")
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vane/vfs/")
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vane/world/")
-
-add_library(
-    ${PROJECT_NAME} STATIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/vane/vane.cpp"
-    $<TARGET_OBJECTS:vane_core>
-    $<TARGET_OBJECTS:vane_gfx>
-    $<TARGET_OBJECTS:vane_platform>
-    $<TARGET_OBJECTS:vane_vfs>
-)
-
-
-file(
-    COPY "${CMAKE_CURRENT_SOURCE_DIR}/vaneroot/"
-    DESTINATION "${VANE_OUTPUT_DIR}/"
-)
-
+add_executable(vane main.cpp $<TARGET_OBJECTS:vane_core> $<TARGET_OBJECTS:vane_full>)
+target_link_libraries(vane PUBLIC vane_full ${VANE_SDL2_OPENGL_LIBRARIES})

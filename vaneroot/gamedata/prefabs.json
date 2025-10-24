@@ -1,0 +1,27 @@
+{
+    "components": [
+        {
+            "name": "Transform",
+            "members": [
+                { "name": "pos", "type": "vec3" },
+                { "name": "rot", "type": "vec4" }
+            ]
+        },
+        {
+            "name": "RigidBody",
+            "members": [
+                { "name": "acc", "type": "vec3" },
+                { "name": "vel", "type": "vec3" }
+            ]
+        }
+    ],
+
+    "prefabs": [
+        {
+            "name": "TestPrefab",
+            "components": [
+                { "name": "Transform", "data": "0000000000000000000000000000" }
+            ]
+        }
+    ]
+}

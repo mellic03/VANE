@@ -1,0 +1,14 @@
+{
+    "services": [
+        "GfxService",
+        "AudioService",
+        "FileService",
+        "NetService"
+    ],
+
+    "directories": [
+        "foliage",
+        "font",
+        "noise"
+    ]
+}
