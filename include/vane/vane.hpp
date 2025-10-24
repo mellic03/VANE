@@ -1,111 +1,50 @@
 #pragma once
 
-#include "types.hpp"
-#include "core/cfgparser.hpp"
-#include "core/game.hpp"
-#include "core/object.hpp"
-#include "core/scene.hpp"
-#include "gfx/gfx.hpp"
-#include "platform/platform.hpp"
+#include <cstddef>
+#include <cstdint>
 
 
 namespace vane
 {
-    class Engine;
-    class Game;
-    class GameScene;
-    class GameObject;
+    class VaneApp;
+    class Platform;
 
-    namespace detail
-    {
-        struct EngFren;
-    }
-
-    template <typename game_type>
-    int vmain( int argc, char **argv );
+    // int vmain( int argc, char **argv, VaneApp* );
 }
 
 
-class vane::Engine
+class vane::VaneApp
 {
-public:
-    Engine( const Engine& ) = delete;
-    Engine( Engine&& ) = delete;
-    Engine &operator=( Engine&& ) = delete;
-    Engine &operator=( const Engine& ) = delete;
-
-    void update();
-    void shutdown();
-    bool running();
-
-    double tsec();
-    uint64 tmsec();
-    Platform &getPlatform();
-    Game *getGame();
-
-    template <typename game_type>
-    game_type &getGame() { return *static_cast<game_type*>(getGame()); }
-
 private:
-    friend class detail::EngFren;
 
-    uint64_t mTicksCurr;
-    uint64_t mTicksPrev;
-    Platform mPlatform;
-    Game    *mGame;
-    bool     mRunning;
-    Engine();
-    ~Engine() {  }
+public:
+    bool      mRunning;
+    uint64_t  mTicksCurr;
+    uint64_t  mTicksPrev;
+    Platform *mPlatform;
+
+    static int va_entry( int argc, char **argv, VaneApp *V );
+
+    VaneApp( Platform *p )
+    :   mRunning(true), mTicksCurr(0), mTicksPrev(0), mPlatform(p) {  }
+    VaneApp( const VaneApp& ) = delete;
+    VaneApp( VaneApp&& ) = delete;
+    VaneApp &operator=( VaneApp&& ) = delete;
+    VaneApp &operator=( const VaneApp& ) = delete;
+    virtual ~VaneApp() = default;
+
+    bool running() { return mRunning; }
+    virtual void update() = 0;
+    virtual int startup(int, char**) = 0;
+    virtual int shutdown() = 0;
+
+    double   tsec()  { return double(mTicksCurr) / 1000.0; }
+    uint64_t tmsec() { return mTicksCurr; }
 
 };
-
-
-
-
 
 
 namespace vane
 {
-    using vmain_t = int (*)(int, char**, Engine&);
-
-    template <typename game_type>
-    int StartVane( int argc, char **argv );
-}
-
-
-struct vane::detail::EngFren
-{
-    template <typename game_type>
-    static Engine *create()
-    {
-        auto *e = new Engine();
-        e->mGame = new game_type(*e);
-        return e;
-    }
-
-    static void destroy( Engine *e )
-    {
-        delete e;
-    }
-};
-
-
-template <typename game_type>
-int vane::vmain( int argc, char **argv )
-{
-    using namespace vane;
-
-    auto *engine = detail::EngFren::create<game_type>();
-    auto *game   = engine->getGame();
-
-    int res = game->startup(argc, argv);
-    if (res != 0) return res;
-
-    while (engine->running())
-    {
-        engine->update();
-    }
-
-    res = game->shutdown();
-    return res;
+    const auto &vmain = VaneApp::va_entry;
 }

@@ -1,6 +1,6 @@
 #include <vane/vfs/archive.hpp>
 #include <vane/core/log.hpp>
-#include <vane/core/file.hpp>
+#include <vane/util/file.hpp>
 #include <vane/core/assert.hpp>
 
 #include <fstream>

@@ -1,12 +1,11 @@
 #pragma once
 
-#include <cassert>
-#include <cstdio>
-
-
 #define VANE_DEBUG
 
 #ifdef VANE_DEBUG
+    #include <cassert>
+    #include <cstdio>
+
     #define STR_HELPER(x) #x
     #define STR(x) STR_HELPER(x)
 

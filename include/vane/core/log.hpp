@@ -1,9 +1,7 @@
 #pragma once
 
-#include <cassert>
 #include <cstdarg>
 #include <cstdio>
-#include <iostream>
 
 
 class syslog

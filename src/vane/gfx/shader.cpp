@@ -1,7 +1,7 @@
 #include <vane/gfx/gl.hpp>
 #include <vane/gfx/shader.hpp>
 #include <vane/core/assert.hpp>
-#include <vane/core/file.hpp>
+#include <vane/util/file.hpp>
 #include <fstream>
 
 using namespace vane;

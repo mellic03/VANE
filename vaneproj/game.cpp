@@ -1,22 +1,26 @@
 #include "./game.hpp"
+#include <vane/platform/platform.hpp>
+#include <vane/core/engine.hpp>
 #include <vane/core/log.hpp>
-#include <vane/core/cfgparser.hpp>
+#include <vane/gfx/gl.hpp>
 #include <vane/gfx/shader.hpp>
+#include <vane/vec.hpp>
 
-void MyGame::update()
+
+void MyVaneApp::update()
 {
-    auto &plat = mEngine.getPlatform();
+    auto &plat = *mPlatform;
     vane::ivec2 p = plat.mousePos();
     float r = float(p.x) / 512.0f;
     float g = float(p.y) / 512.0f;
-    glClearColor(r, g, 0.0f, 1.0f);
+    gl::ClearColor(r, g, 0.0f, 1.0f);
 
     // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    gl::Clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (plat.keyPressed(SDL_SCANCODE_ESCAPE))
     {
-        mEngine.shutdown();
+        this->shutdown();
     }
 
     SDL_GL_SwapWindow(plat.mainWindow()->mWinSDL);
@@ -42,16 +46,15 @@ void MyGame::update()
 //     }
 // }
 
-int MyGame::startup( int argc, char **argv )
+int MyVaneApp::startup( int argc, char **argv )
 {
-    syslog log("MyGame::startup");
+    syslog log("MyVaneApp::startup");
 
     log("argc:     %d", argc);
     for (int i=0; i<argc; i++)
         log("argv[%d]: \"%s\"", i, argv[i]);
 
-    auto &engine = mEngine;
-    auto &game = engine.getGame<MyGame>();
+    auto &GW = this.getVaneApp<MyVaneApp>();
 
     auto *menu = game.createScene("main_menu");
     auto *obj = menu->createObject();
@@ -61,7 +64,7 @@ int MyGame::startup( int argc, char **argv )
 }
 
 
-int MyGame::shutdown()
+int MyVaneApp::shutdown()
 {
     // Flush logs etc
     return 0;

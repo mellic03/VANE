@@ -1,7 +1,6 @@
 #include <vane/platform/platform.hpp>
 #include <vane/core/assert.hpp>
 #include <vane/core/log.hpp>
-#include <vane/SDL.h>
 
 using namespace vane;
 

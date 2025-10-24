@@ -1,5 +1,5 @@
 #include <vane/core/assert.hpp>
-#include <vane/core/file.hpp>
+#include <vane/util/file.hpp>
 #include <vane/stdint.hpp>
 #include <filesystem>
 #include <fstream>

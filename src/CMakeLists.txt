@@ -11,10 +11,13 @@ set(CMAKE_CXX_STANDARD "20")
 set(CMAKE_CXX_FLAGS "-Ofast -Wall -Wextra -Wpedantic -Werror -Wno-missing-field-initializers")
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vane/core/")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vane/dsa/")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vane/gfx/")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vane/platform/")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vane/tooling/")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vane/util/")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vane/vfs/")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vane/world/")
 
 add_library(
     ${PROJECT_NAME} STATIC

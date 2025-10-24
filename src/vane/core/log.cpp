@@ -1,7 +1,4 @@
 #include <vane/core/log.hpp>
-#include <cassert>
-#include <cstdarg>
-#include <cstdio>
 
 
 static FILE *dstfile = stdout;

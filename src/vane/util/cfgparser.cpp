@@ -1,5 +1,5 @@
-#include <vane/core/cfgparser.hpp>
-#include <vane/core/file.hpp>
+#include <vane/util/cfgparser.hpp>
+#include <vane/util/file.hpp>
 #include <vane/core/log.hpp>
 #include <fstream>
 

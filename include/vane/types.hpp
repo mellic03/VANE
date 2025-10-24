@@ -3,6 +3,15 @@
 
 namespace vane
 {
+    template <typename T>
+    class Reliant
+    {
+    private:
+        T &mObj;
+    public:
+        Reliant( const T &x ): mObj(x) {  }
+    };
+
     class Engine;
     class EngineRef;
 }

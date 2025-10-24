@@ -1,14 +1,10 @@
-#include <vane/platform/platform.hpp>
-#include <vane/core/assert.hpp>
-#include <vane/core/log.hpp>
-#include <vane/gfx/gl.hpp>
+#include "./platform.hpp"
 
 using namespace vane;
 
 
-Platform::Platform( vane::Engine &engine )
-:   EngineRef(engine),
-    mMainWin(nullptr)
+Platform::Platform()
+:   mMainWin(nullptr)
 {
     syslog log("Platform::Platform");
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)

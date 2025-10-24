@@ -3,5 +3,5 @@
 
 int main( int argc, char **argv )
 {
-    return vane::vmain<MyGame>(argc, argv);
+    return vane::vmain<MyVaneApp>(argc, argv);
 }

@@ -1,14 +1,21 @@
 #pragma once
 
-#include "types.hpp"
+#include "./SDL.hpp"
 #include <vane/vec.hpp>
-
 #include <set>
 #include <string>
 #include <vector>
 
 union SDL_Event;
 struct SDL_Window;
+
+namespace vane
+{
+    class NativeWindow;
+    class KeyboardIO;
+    class MouseIO;
+    class Platform;
+}
 
 
 class vane::NativeWindow
@@ -67,12 +74,11 @@ private:
 
 
 class vane::Platform
-:   public vane::EngineRef,
-    public vane::KeyboardIO,
+:   public vane::KeyboardIO,
     public vane::MouseIO
 {
 public:
-    Platform( vane::Engine& );
+    Platform();
 
     void update();
     NativeWindow *mainWindow();
@@ -80,7 +86,6 @@ public:
     void destroyWindow( NativeWindow* );
     
 private:
-    friend class vane::Engine;
     NativeWindow            *mMainWin;
     std::set<NativeWindow*>  mWindows;
 };
