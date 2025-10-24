@@ -47,7 +47,6 @@ void VaneApp::update()
 
 void VaneApp::addService( VaneService *srv )
 {
-    syslog log("VaneApp::addService");
     mServices.push_back(srv);
 }
 

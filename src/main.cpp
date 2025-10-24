@@ -50,15 +50,23 @@ int main( int argc, char **argv )
     std::string cmd = "export LD_LIBRARY_PATH=" + std::string(SDL_GetBasePath());
     std::system(cmd.c_str());
 
-
     json_test();
 
 
     Platform platform;
     VaneApp *V = new VaneApp(platform);
 
-    V->addService(loadService(V, "./bin/srv-gfx.so"));
-    V->addService(loadService(V, "./bin/srv-game.so"));
+    for (auto &entry: fs::recursive_directory_iterator(fs::path("./bin/srv/")))
+    {
+        if (entry.is_directory())
+            continue;
+
+        if (auto *srv = loadService(V, entry.path().c_str()))
+        {
+            V->addService(srv);
+            printf("loaded service \"%s\"\n", entry.path().c_str());
+        }
+    }
 
     vane::AppEnter(*V, argc, argv);
 
@@ -72,7 +80,7 @@ VaneService *loadService( VaneApp *V, const char *filepath )
     fs::path inpath(filepath);
     VANE_ASSERT(fs::exists(inpath), "No such file \"%s\"", inpath.c_str());
 
-    void *obj = SDL_LoadObject(inpath.c_str());
+    void *obj = SDL_LoadObject(inpath.string().c_str());
     if (obj == NULL)
     {
         printf("A: %s\n", SDL_GetError());

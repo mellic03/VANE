@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vane_GL/glew.h>
-#include <vane_SDL2/SDL.h>
+#include <GL/glew.h>
+#include <SDL2/SDL.h>
 #include <cassert>
 
 #define GLClearError() \

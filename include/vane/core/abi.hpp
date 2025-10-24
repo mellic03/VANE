@@ -2,7 +2,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <vane_SDL2/SDL.h>
+#include <SDL2/SDL.h>
 
 
 extern "C"

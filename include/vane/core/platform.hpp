@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vane_SDL2/SDL.h>
+#include <SDL2/SDL.h>
 #include <vane/vec.hpp>
 #include <set>
 #include <string>

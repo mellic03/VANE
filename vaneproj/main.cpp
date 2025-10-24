@@ -65,7 +65,6 @@ int main( int argc, char **argv )
 
     V.addService<GfxService>();
     V.addService<GameService>();
-
     vane::AppEnter(V, argc, argv);
 
     return 0;
