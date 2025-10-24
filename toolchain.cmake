@@ -9,7 +9,7 @@ SET(CMAKE_RC_COMPILER  x86_64-w64-mingw32-windres)
 
 # where is the target environment located
 set(CMAKE_FIND_ROOT_PATH /usr/x86_64-w64-mingw32)
-# set(CMAKE_FIND_ROOT_PATH /usr/x86_64-w64-mingw32 /usr/lib/gcc/x86_64-w64-mingw32/13-win32)
+
 # adjust the default behavior of the FIND_XXX() commands:
 # search programs in the host environment
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
