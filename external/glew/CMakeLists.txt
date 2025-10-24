@@ -5,6 +5,8 @@ project(GLEW)
 include_directories("include/")
 add_library(GLEW SHARED src/glew.c)
 
+target_link_libraries(GLEW PUBLIC /usr/x86_64-w64-mingw32/lib/libopengl32.a)
+
 # add_library(GLEW-static STATIC src/glew.c)
 # target_compile_features(GLEW-static PUBLIC cxx_std_20)
 # target_compile_options(GLEW-static PUBLIC ${VANE_COMPILE_OPTIONS})

@@ -14,6 +14,10 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vfs/")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/world/")
 target_link_libraries(vane_full PUBLIC vane_core ${SDL2_OPENGL_LIBRARIES})
 
-
 add_executable(vane main.cpp $<TARGET_OBJECTS:vane_core> $<TARGET_OBJECTS:vane_full>)
-target_link_libraries(vane PUBLIC vane_full ${SDL2_OPENGL_LIBRARIES})
+target_link_libraries(
+    vane PUBLIC
+    vane_full
+    "/usr/x86_64-w64-mingw32/lib/libopengl32.a"
+    ${SDL2_OPENGL_LIBRARIES}
+)

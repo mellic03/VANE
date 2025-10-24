@@ -61,10 +61,10 @@ int main( int argc, char **argv )
         if (entry.is_directory())
             continue;
 
-        if (auto *srv = loadService(V, entry.path().c_str()))
+        if (auto *srv = loadService(V, entry.path().string().c_str()))
         {
             V->addService(srv);
-            printf("loaded service \"%s\"\n", entry.path().c_str());
+            printf("loaded service \"%s\"\n", entry.path().string().c_str());
         }
     }
 
