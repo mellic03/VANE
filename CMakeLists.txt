@@ -10,15 +10,12 @@ else()
     set(VANE_OUTPUT_DIR "${CMAKE_BINARY_DIR}/../vane_release")
 endif()
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${VANE_OUTPUT_DIR}/bin")
-set(VANE_COMPILE_OPTIONS -Wno-missing-field-initializers)
-add_subdirectory("${CMAKE_SOURCE_DIR}/external")
+# set(VANE_COMPILE_OPTIONS -Wno-missing-field-initializers)
 
-if(TARGET SDL2::SDL2main)
-    set(SDL2_OPENGL_LIBRARIES ${OPENGL_LIBRARIES} SDL2::SDL2main SDL2::SDL2 GLEW)
-else()
-    set(SDL2_OPENGL_LIBRARIES ${OPENGL_LIBRARIES} SDL2::SDL2 GLEW)
-endif()
+add_subdirectory("${CMAKE_SOURCE_DIR}/external/glew/")
+
+set(SDL2_OPENGL_LIBRARIES ${OPENGL_LIBRARIES} GLEW SDL2::SDL2)
+
 
 include_directories(
     "${CMAKE_SOURCE_DIR}/include/"
@@ -27,8 +24,17 @@ include_directories(
 )
 
 
+add_subdirectory("${CMAKE_SOURCE_DIR}/external/")
 add_subdirectory("${CMAKE_SOURCE_DIR}/src/")
 add_subdirectory("${CMAKE_SOURCE_DIR}/vaneproj/")
 
 
-file(COPY "${CMAKE_SOURCE_DIR}/vaneroot/" DESTINATION "${VANE_OUTPUT_DIR}/")
+install(TARGETS vane RUNTIME DESTINATION "bin/")
+install(TARGETS vgame ARCHIVE DESTINATION "bin/srv/")
+install(TARGETS srv-gfx srv-game RUNTIME DESTINATION "bin/srv/")
+
+install(
+    DIRECTORY ${CMAKE_SOURCE_DIR}/vaneroot/
+    DESTINATION "."
+)
+

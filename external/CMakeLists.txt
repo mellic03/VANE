@@ -1,21 +1,26 @@
-cmake_minimum_required(VERSION 3.11)
+set( BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE )
 
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${VANE_OUTPUT_DIR}/bin/thirdparty")
+set(SDL_LIBC ON CACHE BOOL "" FORCE)
+set(SDL_TEST OFF CACHE BOOL "" FORCE)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/SDL2/")
+target_link_libraries(vane SDL2::SDL2main SDL2::SDL2-static)
 
-add_subdirectory("glew" EXCLUDE_FROM_ALL)
-add_subdirectory("SDL2" EXCLUDE_FROM_ALL)
+
+add_compile_definitions(GLEW_STATIC)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/glew/")
+target_link_libraries(vane GLEW)
 
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    file(
-        COPY "${SDL2_BINARY_DIR}/include-config-debug/"
-        DESTINATION "${SDL2_BINARY_DIR}/include/"
-    )
+# if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+#     file(
+#         COPY "${SDL2_BINARY_DIR}/include-config-debug/"
+#         DESTINATION "${SDL2_BINARY_DIR}/include/"
+#     )
 
-else()
-    file(
-        COPY "${SDL2_BINARY_DIR}/include-config-release/"
-        DESTINATION "${SDL2_BINARY_DIR}/include/"
-    )
-endif()
+# else()
+#     file(
+#         COPY "${SDL2_BINARY_DIR}/include-config-release/"
+#         DESTINATION "${SDL2_BINARY_DIR}/include/"
+#     )
+# endif()
 

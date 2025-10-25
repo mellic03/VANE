@@ -1,28 +1,34 @@
 #!/bin/bash
 export CMAKE_POLICY_VERSION_MINIMUM=3.11
+thisdir=$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
-mkdir -p build/cmake_{debug,release}
+vanebuild()
+{
+    local suffix=$1
+    local cmake_flag=""
+    local cmake_path="$thisdir/build/cmake_$suffix/"
+    local vane_path="$thisdir/build/vane_$suffix/"
 
-cmake -G Ninja -S ./ -B ./build/cmake_debug \
-      -DCMAKE_BUILD_TYPE=Debug \
-      -DCMAKE_INSTALL_PREFIX=$(pwd)/output/ \
-      -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake
+    if [ "$suffix" = "debug" ]; then
+        cmake_flag="Debug"
+    elif [ "$suffix" = "release" ]; then
+        cmake_flag="Release"
+    else
+        echo "Usage: ./build.sh [debug|release]"
+        exit 1
+    fi
 
-cmake --build ./build/cmake_debug
+    mkdir -p {$cmake_path,$vane_path}
 
-# cmake -G Ninja ../../ -DCMAKE_BUILD_TYPE=Debug \
-#       -DCMAKE_INSTALL_PREFIX=$(pwd)/output/ \
-#       -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake
-# ninja
-# cd ../../
+    cmake -G Ninja -S $thisdir -B $cmake_path \
+          -DCMAKE_BUILD_TYPE=$cmake_flag \
+          -DCMAKE_INSTALL_PREFIX=$vane_path \
+          -DCMAKE_TOOLCHAIN_FILE=x86_64-w64-mingw32.cmake
+
+    cmake --build $cmake_path
+    cmake --install $cmake_path
+}
 
 
-
-# cd build/cmake_release
-# cmake -G Ninja ../../ -DCMAKE_BUILD_TYPE=Release \
-#       -DCMAKE_INSTALL_PREFIX=$(pwd)/output/ \
-#       -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake
-# ninja
-# cd ../../
-
+vanebuild "debug"
 

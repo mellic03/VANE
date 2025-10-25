@@ -16,11 +16,3 @@ target_link_libraries(vane_full PUBLIC vane_core ${SDL2_OPENGL_LIBRARIES})
 
 add_executable(vane main.cpp $<TARGET_OBJECTS:vane_core> $<TARGET_OBJECTS:vane_full>)
 target_link_libraries(vane PUBLIC vane_full ${SDL2_OPENGL_LIBRARIES})
-
-
-# install(
-#     TARGETS vane EXPORT vanetargets
-#     RUNTIME DESTINATION bin/${qual}
-#     ARCHIVE DESTINATION lib/${qual}
-#     INCLUDES DESTINATION include/${qual}
-# )
