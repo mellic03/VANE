@@ -1,6 +1,8 @@
 .directory
 .vscode
 build
+external/build
+external/install
 external/shaderc
 include/GL
 include/SDL2

@@ -1,7 +1,6 @@
 #include <vane/gfx/gfx.hpp>
 
 
-
 uint32_t create_texture( int w, int h, void *data )
 {
     GLuint tex;
