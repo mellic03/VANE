@@ -18,9 +18,7 @@ target_include_directories(vane PRIVATE "include/")
 
 target_link_libraries(
     vane PRIVATE
-    SDL3::SDL3-static OpenGL::GL GLAD
-    assimp
-    glm
+    SDL3::SDL3-static OpenGL::GL GLAD glm assimp
 )
 
 install(

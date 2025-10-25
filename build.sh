@@ -23,7 +23,11 @@ vanebuild()
     cmake -G Ninja -S $thisdir -B $cmake_path \
           -DCMAKE_BUILD_TYPE=$cmake_flag \
           -DCMAKE_INSTALL_PREFIX=$vane_path \
-          -DSDL_STATIC=ON
+          -DSDL_STATIC=ON \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DGLM_BUILD_TESTS=OFF \
+            -DGLM_FORCE_INLINE=ON \
+            -DGLM_FORCE_INTRINSICS=ON 
         #   -DCMAKE_TOOLCHAIN_FILE=x86_64-w64-mingw32.cmake
 
     cmake --build $cmake_path
@@ -32,7 +36,5 @@ vanebuild()
 
 
 vanebuild "debug"
-# vanebuild "release"
-
-# cmake --build build_directory_name --target clean
+vanebuild "release"
 
