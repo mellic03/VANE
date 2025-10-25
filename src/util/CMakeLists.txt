@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.11)
 
 target_sources(
-    vane_full PRIVATE
+    vane PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/cfgparser.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/file.cpp"
 )
