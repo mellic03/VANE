@@ -8,8 +8,11 @@ cmake_minimum_required(VERSION 3.11)
 # target_link_libraries(vgame PUBLIC vane_full ${SDL2_OPENGL_LIBRARIES})
 
 add_library(srv-gfx SHARED srv-gfx.cpp)
-target_link_libraries(srv-gfx PUBLIC vane_full GLEW SDL2::SDL2main SDL2::SDL2)
+target_link_libraries(srv-gfx PRIVATE GLEW OpenGL::GL SDL3::SDL3-static)
+target_compile_features(srv-gfx PUBLIC cxx_std_20)
+target_include_directories(srv-gfx PRIVATE "${CMAKE_SOURCE_DIR}/include/")
 
 add_library(srv-game SHARED srv-game.cpp)
-target_link_libraries(srv-game PUBLIC vane_full GLEW SDL2::SDL2main SDL2::SDL2)
-
+target_link_libraries(srv-game PRIVATE GLEW OpenGL::GL SDL3::SDL3-static)
+target_compile_features(srv-game PUBLIC cxx_std_20)
+target_include_directories(srv-game PRIVATE "${CMAKE_SOURCE_DIR}/include/")

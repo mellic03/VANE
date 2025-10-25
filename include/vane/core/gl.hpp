@@ -2,8 +2,8 @@
 
 // #include "../../GL/glew.h"
 // #include "../../SDL2/SDL.h"
-#include <GL/glew.h>
-#include <SDL2/SDL.h>
+#include <vane/glew.hpp>
+#include <vane/SDL.hpp>
 #include <cassert>
 
 #define GLClearError() \

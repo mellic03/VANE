@@ -16,7 +16,7 @@ NativeWindow::NativeWindow( Platform &plat, const std::string &title, int W, int
     int h = (H > 0) ? H : SDL_WINDOW_FULLSCREEN;
     Uint32 flags = 0 | SDL_WINDOW_OPENGL;
 
-    mWinSDL = SDL_CreateWindow(title.c_str(), x, y, w, h, flags);
+    mWinSDL = SDL_CreateWindow(title.c_str(), w, h, flags);
     if (mWinSDL == NULL)
     {
         log("Error: \"%s\"", SDL_GetError());
@@ -30,6 +30,7 @@ NativeWindow::NativeWindow( Platform &plat, const std::string &title, int W, int
         exit(1);
     }
 
+    SDL_SetWindowPosition(mWinSDL, x, y);
     log("resolution: %dx%d", w, h);
 }
 

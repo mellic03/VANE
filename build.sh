@@ -23,8 +23,9 @@ vanebuild()
     cmake -G Ninja -S $thisdir -B $cmake_path \
           -DCMAKE_BUILD_TYPE=$cmake_flag \
           -DCMAKE_INSTALL_PREFIX=$vane_path \
-          -DSDL_STATIC=true
-        #   -DCMAKE_TOOLCHAIN_FILE=x86_64-w64-mingw32.cmake
+          -DGLEW_STATIC=true \
+          -DSDL_SHARED=false -DSDL_STATIC=true \
+          -DCMAKE_TOOLCHAIN_FILE=x86_64-w64-mingw32.cmake
 
     cmake --build $cmake_path
     cmake --install $cmake_path

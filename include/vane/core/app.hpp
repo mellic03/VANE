@@ -54,7 +54,8 @@ public:
     void update();
 
     auto &platform() { return mPlat; }
-    size_t appTime() { return mTicksCurr; }
+    size_t appTime() { return mTicksCurr/1000; }
+    size_t appTime_usec() { return mTicksCurr; }
     size_t delTime() { return mTicksCurr-mTicksPrev; }
 
 };

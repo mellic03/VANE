@@ -22,32 +22,32 @@ void MouseIO::update( const SDL_Event &e )
         default:
             VANE_ASSERT(false, "Invalid type!");
             break;
-        case SDL_MOUSEMOTION:
+        case SDL_EVENT_MOUSE_MOTION:
             SDL_GetMouseState(&mPos.x, &mPos.y);
             break;
-        case SDL_MOUSEBUTTONDOWN:
+        case SDL_EVENT_MOUSE_BUTTON_DOWN:
             mPrevDown[idx] = mCurrDown[idx];
             mCurrDown[idx] = true;
             mClicks[idx] = e.button.clicks;
             break;
-        case SDL_MOUSEBUTTONUP:
+        case SDL_EVENT_MOUSE_BUTTON_UP:
             mPrevDown[idx] = mCurrDown[idx];
             mCurrDown[idx] = false;
             mClicks[idx] = 0;
             break;
-        case SDL_MOUSEWHEEL:
-            mDWheel.x += e.wheel.mouseX;
-            mDWheel.y += e.wheel.mouseY;
+        case SDL_EVENT_MOUSE_WHEEL:
+            mDWheel.x += e.wheel.mouse_x;
+            mDWheel.y += e.wheel.mouse_y;
             break;
     }
 }
 
-ivec2 MouseIO::mousePos()
+vec2 MouseIO::mousePos()
 {
     return mPos;
 }
 
-ivec2 MouseIO::mouseDelta()
+vec2 MouseIO::mouseDelta()
 {
     return mDPos;
 }

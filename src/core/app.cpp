@@ -24,7 +24,7 @@ void VaneApp::_AppExit( int code )
 void VaneApp::update()
 {
     mTicksPrev = mTicksCurr;
-    mTicksCurr = SDL_GetTicks64();
+    mTicksCurr = SDL_GetTicksNS();
     mPlat.update();
 
     for (auto *srv: mServices)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL2/SDL.h>
+#include <vane/SDL.hpp>
 #include <vane/vec.hpp>
 #include <set>
 #include <string>
@@ -61,14 +61,14 @@ public:
 
     MouseIO();
     void update( const SDL_Event& );
-    ivec2 mousePos();
-    ivec2 mouseDelta();
+    vec2 mousePos();
+    vec2 mouseDelta();
     bool mousePressed( Button, int clicks=0 );
     bool mouseReleased( Button, int clicks=0 );
     bool mouseClicked( Button, int n );
 
 private:
-    ivec2 mPos, mDPos, mDWheel;
+    vec2 mPos, mDPos, mDWheel;
     bool mCurrDown[int(Button::NUM_BUTTONS)];
     bool mPrevDown[int(Button::NUM_BUTTONS)];
     int  mClicks[int(Button::NUM_BUTTONS)];

@@ -7,7 +7,7 @@ Platform::Platform()
 :   mMainWin(nullptr)
 {
     syslog log("Platform::Platform");
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+    if (!SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO))
     {
         log("Error: \"%s\"", SDL_GetError());
         exit(1);
@@ -40,15 +40,15 @@ void Platform::update()
     {
         switch (e.type)
         {
-            case SDL_KEYDOWN:
-            case SDL_KEYUP:
+            case SDL_EVENT_KEY_DOWN:
+            case SDL_EVENT_KEY_UP:
                 KeyboardIO::update(e);
                 break;
 
-            case SDL_MOUSEMOTION:
-            case SDL_MOUSEBUTTONDOWN:
-            case SDL_MOUSEBUTTONUP:
-            case SDL_MOUSEWHEEL:
+            case SDL_EVENT_MOUSE_MOTION:
+            case SDL_EVENT_MOUSE_BUTTON_DOWN:
+            case SDL_EVENT_MOUSE_BUTTON_UP:
+            case SDL_EVENT_MOUSE_WHEEL:
                 MouseIO::update(e);
                 break;
         }
