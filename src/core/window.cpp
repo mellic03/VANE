@@ -10,8 +10,6 @@ NativeWindow::NativeWindow( Platform &plat, const std::string &title, int W, int
 {
     syslog log("NativeWindow::NativeWindow");
 
-    int x = SDL_WINDOWPOS_CENTERED;
-    int y = SDL_WINDOWPOS_CENTERED;
     int w = (W > 0) ? W : SDL_WINDOW_FULLSCREEN;
     int h = (H > 0) ? H : SDL_WINDOW_FULLSCREEN;
     Uint32 flags = 0 | SDL_WINDOW_OPENGL;
@@ -30,7 +28,8 @@ NativeWindow::NativeWindow( Platform &plat, const std::string &title, int W, int
         exit(1);
     }
 
-    SDL_SetWindowPosition(mWinSDL, x, y);
+    SDL_GL_MakeCurrent(mWinSDL, mCtxGL);
+
     log("resolution: %dx%d", w, h);
 }
 

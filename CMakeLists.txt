@@ -5,7 +5,6 @@ project(vane)
 find_package(OpenGL REQUIRED)
 add_subdirectory("external/")
 
-
 add_executable(vane "src/main.cpp")
 add_subdirectory("src/core/")
 add_subdirectory("src/dsa/")
@@ -15,13 +14,13 @@ add_subdirectory("src/vfs/")
 add_subdirectory("src/world/")
 
 target_compile_features(vane PUBLIC cxx_std_20)
-target_include_directories(vane PRIVATE "include/" "external/glew/include/")
-target_link_libraries(vane PRIVATE GLEW-static OpenGL::GL SDL3::SDL3-static)
-
+target_include_directories(vane PRIVATE "include/")
+target_link_libraries(vane PRIVATE SDL3::SDL3-static OpenGL::GL GLAD)
 
 install(
-    TARGETS vane GLEW-static
+    TARGETS vane SDL3-static
     RUNTIME DESTINATION "bin/"
+    LIBRARY DESTINATION "bin/"
 )
 # install(TARGETS vgame ARCHIVE DESTINATION "bin/srv/")
 # install(TARGETS srv-gfx srv-game RUNTIME DESTINATION "bin/srv/")

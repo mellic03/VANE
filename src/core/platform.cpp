@@ -9,18 +9,29 @@ Platform::Platform()
     syslog log("Platform::Platform");
     if (!SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO))
     {
-        log("Error: \"%s\"", SDL_GetError());
+        log("Error on SDL_Init: \"%s\"", SDL_GetError());
         exit(1);
     }
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
     mMainWin = createWindow("VANE", 512, 512);
-    if (glewInit() != GLEW_OK)
+
+    if (!gladLoadGL())
     {
-        log("Error initializing glew");
+        log("gladLoadGL error");
         exit(1);
     }
+
+    // glewExperimental = GL_TRUE;
+    // GLenum glewError = glewInit();
+    // if (glewError != GLEW_OK)
+    // {
+    //     log("glewInit: error %u, %s", glewError, glewGetErrorString(glewError));
+    //     exit(1);
+    // }
 
     GLint major, minor;
     glGetIntegerv(GL_MAJOR_VERSION, &major);

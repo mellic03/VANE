@@ -2,7 +2,8 @@
 
 // #include "../../GL/glew.h"
 // #include "../../SDL2/SDL.h"
-#include <vane/glew.hpp>
+// #include <vane/glew.hpp>
+#include <glad/glad.h>
 #include <vane/SDL.hpp>
 #include <cassert>
 

@@ -14,9 +14,6 @@ namespace fs = std::filesystem;
 using json = nlohmann::json;
 
 
-
-
-
 static void json_services( json &data )
 {
     for (auto &[key, val]: data.items())
@@ -47,10 +44,11 @@ int main( int argc, char **argv )
     auto base = fs::path(SDL_GetBasePath());
     fs::current_path(base / fs::path("../"));
     std::cout << fs::current_path() << "\n";
-    // std::string cmd = "export LD_LIBRARY_PATH=" + std::string(SDL_GetBasePath());
-    // std::system(cmd.c_str());
 
-    // json_test();
+    std::string cmd = "export LD_LIBRARY_PATH=" + std::string(SDL_GetBasePath());
+    std::system(cmd.c_str());
+
+    json_test();
 
 
     Platform platform;

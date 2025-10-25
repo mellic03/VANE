@@ -25,7 +25,7 @@ class vane::NativeWindow
 {
 public:
     SDL_Window *mWinSDL;
-    void *mCtxGL;
+    SDL_GLContext mCtxGL;
 
 private:
     friend class vane::Platform;
