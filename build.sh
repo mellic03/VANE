@@ -32,5 +32,7 @@ vanebuild()
 
 
 vanebuild "debug"
-vanebuild "release"
+# vanebuild "release"
+
+# cmake --build build_directory_name --target clean
 

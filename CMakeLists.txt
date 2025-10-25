@@ -15,15 +15,19 @@ add_subdirectory("src/world/")
 
 target_compile_features(vane PUBLIC cxx_std_20)
 target_include_directories(vane PRIVATE "include/")
-target_link_libraries(vane PRIVATE SDL3::SDL3-static OpenGL::GL GLAD)
+
+target_link_libraries(
+    vane PRIVATE
+    SDL3::SDL3-static OpenGL::GL GLAD
+    assimp
+    glm
+)
 
 install(
-    TARGETS vane SDL3-static
+    TARGETS vane assimp
     RUNTIME DESTINATION "bin/"
     LIBRARY DESTINATION "bin/"
 )
-# install(TARGETS vgame ARCHIVE DESTINATION "bin/srv/")
-# install(TARGETS srv-gfx srv-game RUNTIME DESTINATION "bin/srv/")
 
 install(
     DIRECTORY ${CMAKE_SOURCE_DIR}/vaneroot/
