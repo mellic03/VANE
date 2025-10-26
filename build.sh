@@ -20,12 +20,12 @@ vanebuild()
 
     mkdir -p {$cmake_path,$vane_path}
 
-    cmake -G Ninja -S $thisdir -B $cmake_path \
+    cmake -S $thisdir -B $cmake_path \
           -DCMAKE_BUILD_TYPE=$cmake_flag \
           -DCMAKE_INSTALL_PREFIX=$vane_path
         #   -DCMAKE_TOOLCHAIN_FILE=x86_64-w64-mingw32.cmake
 
-    cmake --build $cmake_path
+    cmake --build $cmake_path --parallel 8
     cmake --install $cmake_path
 }
 
