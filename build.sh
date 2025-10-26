@@ -20,51 +20,71 @@ vanebuild()
     cmake --install $buildpath
 }
 
-if [ "$#" = "0" ]; then
+usage_error()
+{
+    echo "Usage: build.sh [TARGET] [MODE]"
+    echo "target"
+    echo "  --vane      Engine only"
+    echo "  --deps      Dependencies only"
+    echo "  --all       Engine and Dependencies"
+    echo "mode"
+    echo "  Debug       Debug build"
+    echo "  Release     Release build (implied)"
     exit 1
+}
+
+is_valid()
+{
+    local key=$1
+    local items=$2
+    for item in "${items[@]}"; do
+        if [[ "$key" == "$item" ]]; then
+            echo true
+            break
+        fi
+    done
+}
+
+ValidTargets=("--vane" "--deps" "--all")
+ValidModes=("Debug" "Release")
+TgValid=true
+MdValid=true
+CurrTarget="--all"
+CurrMode="Release"
+
+if [ $# -eq 0 ]; then
+    usage_error
 fi
 
-
-bdext=0
-bddbg=0
-bdrel=0
-
-if [ "$#" = 0 ]; then
-    bddbg=1;
+if [ $# -eq 1 ]; then
+    TgValid=$(is_valid $1 $ValidTargets)
+elif [ $# -eq 2 ]; then
+    TgValid=$(is_valid $1 $ValidTargets)
+    MdValid=$(is_valid $2 $ValidModes)
+    CurrMode=$2
 fi
 
-for arg in "$@"; do
-    if [ "$arg" = "--external" ]; then
-        bdext=1
-    fi
-    if [ "$arg" = "--debug" ]; then
-        bddbg=1
-    fi
-    if [ "$arg" = "--release" ]; then
-        bdrel=1
-    fi
-    if [ "$arg" = "--full" ]; then
-        bdext=1
-        bddbg=1
-        bdrel=1
-    fi
-done
+if [ "$TgValid" = "false" ]; then
+    usage_error
+elif [ "$MdValid" = "false" ]; then
+    usage_error
+fi
 
+CurrTarget=$1
+CurrMode=$2
 
-if [ "$bdext" = "1" ]; then
-    if [ "$bddbg" = "1" ]; then
-        external/build.sh Debug
-    fi
-    if [ "$bdrel" = "1" ]; then
-        external/build.sh Debug
-    fi
-
+if [ "$CurrTarget" = "--all" ]; then
+    echo "external/build.sh $CurrMode"
+    echo "vanebuild $CurrMode"
+    external/build.sh $CurrMode
+    vanebuild $CurrMode
+elif [ "$CurrTarget" = "--deps" ]; then
+    echo "external/build.sh $CurrMode"
+    external/build.sh $CurrMode
+elif [ "$CurrTarget" = "--vane" ]; then
+    echo "vanebuild $CurrMode"
+    vanebuild $CurrMode
 else
-    if [ "$bddbg" = "1" ]; then
-        vanebuild Debug
-    fi
-    if [ "$bdrel" = "1" ]; then
-        vanebuild Release
-    fi
+    usage_error
 fi
 
