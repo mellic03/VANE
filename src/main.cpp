@@ -93,6 +93,8 @@ VaneService *loadService( VaneApp*, const char* );
 
 int main( int argc, char **argv )
 {
+    printf("VANE_VERSION %s\n", VANE_VERSION);
+
     auto base = fs::path(SDL_GetBasePath());
     fs::current_path(base / fs::path("../"));
     std::cout << fs::current_path() << "\n";

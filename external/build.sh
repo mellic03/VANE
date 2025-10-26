@@ -26,10 +26,15 @@ buildmd()
     cmake --install $buildpath
 }
 
-buildmd $1 assimp -DBUILD_SHARED_LIBS=ON -DASSIMP_BUILD_ZLIB=ON
-buildmd $1 glad -DBUILD_SHARED_LIBS=OFF
-buildmd $1 glm -DBUILD_SHARED_LIBS=OFF -DGLM_BUILD_TESTS=OFF
-buildmd $1 SDL3 -DSDL_STATIC=ON -DSDL_SHARED=ON -DSDL_LIBC=ON
+arg0=$1
+if [ "$#" = "0" ]; then
+    arg0=Release
+fi
+
+buildmd $arg0 assimp -DBUILD_SHARED_LIBS=OFF # -DASSIMP_BUILD_ZLIB=ON
+buildmd $arg0 glad -DBUILD_SHARED_LIBS=OFF
+buildmd $arg0 glm -DBUILD_SHARED_LIBS=OFF -DGLM_BUILD_TESTS=OFF
+buildmd $arg0 SDL3 -DSDL_STATIC=ON -DSDL_SHARED=ON -DSDL_LIBC=ON
 
 
 # shaderc_dir=$thisdir/repo/shaderc/
