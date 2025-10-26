@@ -1,6 +1,3 @@
-set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-set(CMAKE_INSTALL_RPATH "$ORIGIN/bin")
-
 project(vane_common)
 include_directories( "${CMAKE_SOURCE_DIR}/include/")
 
@@ -14,7 +11,10 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/world/")
 
 target_compile_features(vane_common PUBLIC cxx_std_20)
 target_link_libraries(
-    vane_common PUBLIC SDL3 OpenGL::GL glad glm
+    vane_common PUBLIC
+    glad OpenGL::GL glm
+    SDL3::SDL3-shared
+    # vane_common PUBLIC glad OpenGL::GL "${CMAKE_SOURCE_DIR}/external/install/lib/libSDL3.so" glm
 )
 
 

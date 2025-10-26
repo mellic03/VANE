@@ -3,11 +3,15 @@
 #include <vane/core/log.hpp>
 #include <vane/gfx/gfx.hpp>
 #include <vane/vec.hpp>
+
 using namespace vane;
+
+#include <vane/vfs/archive.hpp>
+static vane::PkgArchive VaneArchive;
+
 
 #include <filesystem>
 namespace fs = std::filesystem;
-
 
 
 
@@ -63,6 +67,7 @@ bool DoTheImportThing( const std::string &pFile )
 #include <nlohmann/json.hpp>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 using json = nlohmann::json;
 
 
@@ -76,9 +81,13 @@ static void json_services( json &data )
 
 static void json_test()
 {
-    std::ifstream f("engine/init.json");
-    json data = json::parse(f);
+    auto [base, size, zzz] = VaneArchive.open("init.json");
+    if (!base)
+    {
+        return;
+    }
 
+    json data = json::parse(base, base+size);
     for (auto &[key, val]: data.items())
     {
         if (key == "services")
@@ -93,15 +102,15 @@ VaneService *loadService( VaneApp*, const char* );
 
 int main( int argc, char **argv )
 {
-    printf("VANE_VERSION %s\n", VANE_VERSION);
-
     auto base = fs::path(SDL_GetBasePath());
-    fs::current_path(base / fs::path("../"));
+    // std::cout << base << "\n";
+    fs::current_path(base); // / fs::path("../"));
     std::cout << fs::current_path() << "\n";
 
-    std::string cmd = "export LD_LIBRARY_PATH=" + std::string(SDL_GetBasePath());
-    std::system(cmd.c_str());
+    // std::string cmd = "export LD_LIBRARY_PATH=" + std::string(SDL_GetBasePath());
+    // std::system(cmd.c_str());
 
+    VaneArchive.load("vdata.pkg");
     json_test();
 
     DoTheImportThing("engine/model/unit-sphere.gltf");

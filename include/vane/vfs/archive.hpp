@@ -38,18 +38,20 @@ private:
 
 public:
 
-    struct FileHandle {
-        const std::string name;
+    struct FileHandle
+    {
         const char *data;
         size_t size;
+        const char *name;
 
-        FileHandle( const char *n, const char *d, size_t s )
-        : name(n), data(d), size(s) {  };
+        // FileHandle( const char *d, size_t s, const char *n )
+        // : data(d), size(s), name(n) {  };
     };
 
     void for_each( std::function<void(const FileHandle&)> );
+    FileHandle open( const std::string& );
     void add( const std::string&, const void *src, size_t size );
     void save( const std::string& );
-    void load( const std::string& );
+    void load( const std::string& ) ;
 
 };

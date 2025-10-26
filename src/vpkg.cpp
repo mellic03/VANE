@@ -87,15 +87,13 @@ int main( int argc, char **argv )
     VANE_ASSERT(fs::exists(inpath), "Invalid path \"%s\"", inpath.c_str());
 
 
-    auto base = fs::path(SDL_GetBasePath());
-    // fs::current_path(base / fs::path("../"));
     vane::PkgArchive PA;
 
     if (listmode == true)
     {
         PA.load(inpath.string());
         PA.for_each([](const vane::PkgArchive::FileHandle &F) {
-            printf("%s\n", F.name.c_str());
+            printf("%s\n", F.name);
         });
         return 0;
     }

@@ -47,8 +47,26 @@ void PkgArchive::for_each( std::function<void(const FileHandle&)> fn )
 
     for (auto *F=ftab; F<ftab+head->count; F++)
     {
-        fn(FileHandle(F->name, base+F->offset, F->size));
+        fn({base+F->offset, F->size, F->name});
     }
+}
+
+
+PkgArchive::FileHandle PkgArchive::open( const std::string &name )
+{
+    auto *base = &mBuf[0];
+    auto *head = (RootHeader*)(base);
+    auto *ftab = (FileTableEntry*)(base + head->offset);
+
+    for (auto *F=ftab; F<ftab+head->count; F++)
+    {
+        if (name == std::string(F->name))
+        {
+            return {base+F->offset, F->size, F->name};
+        }
+    }
+
+    return {nullptr, 0, nullptr};
 }
 
 
