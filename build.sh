@@ -1,15 +1,14 @@
 #!/bin/bash
-export CMAKE_POLICY_VERSION_MINIMUM=3.11
+export CMAKE_POLICY_VERSION_MINIMUM=3.21
 thisdir=$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 vanebuild()
 {
     echo "[vanebuild] buildtype=$1"
 
-    local buildtype=$1
-    local cmake_flag=""
-    local buildpath="$thisdir/build/CMake/$buildtype/"
-    local installpath="$thisdir/build/$buildtype/"
+    local buildtype=$1 # lowercase
+    local buildpath=$thisdir/build/cmake/${buildtype,,}
+    local installpath=$thisdir/build/${buildtype,,}
 
     mkdir -p {$buildpath,$installpath}
 
@@ -19,9 +18,6 @@ vanebuild()
 
     cmake --build $buildpath -j8
     cmake --install $buildpath
-
-    $installpath/bin/vpkg -i $thisdir/vane/vroot/engine -o $installpath/engine.pkg
-
 }
 
 if [ "$#" = "0" ]; then
@@ -71,7 +67,4 @@ else
         vanebuild Release
     fi
 fi
-
-
-source $thisdir/vane/vaneroot/env.sh
 

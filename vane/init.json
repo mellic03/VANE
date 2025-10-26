@@ -7,8 +7,6 @@
     ],
 
     "directories": [
-        "foliage",
-        "font",
-        "noise"
+        "font", "model", "foliage","noise"
     ]
 }

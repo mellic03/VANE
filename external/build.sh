@@ -1,20 +1,25 @@
 #!/bin/bash
-export CMAKE_POLICY_VERSION_MINIMUM=3.11
+export CMAKE_POLICY_VERSION_MINIMUM=3.21
 thisdir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 buildmd()
 {
     cd $thisdir
 
+    local installpath=install
+    if [ "$1" = "Debug" ]; then
+        installpath+=d
+    fi
+
     local buildtype=$1
-    local srcpath=submodule/$2
-    local buildpath=$buildtype/build/$2
-    local installpath=$buildtype
+    local srcpath=repo/$2
+    local buildpath=build/${buildtype,,}/$2
+    local buildpath=build/${buildtype,,}/$2
+
     shift 2
     local defines=$@
 
     mkdir -p $buildpath
-
     cmake -DCMAKE_BUILD_TYPE=$buildtype -DCMAKE_INSTALL_PREFIX=$installpath $defines \
           -S $srcpath -B $buildpath
     cmake --build $buildpath  -j8
@@ -24,7 +29,8 @@ buildmd()
 # buildmd $1 assimp -DASSIMP_BUILD_TESTS=OFF -DASSIMP_INSTALL=ON -DASSIMP_BUILD_ZLIB=ON
 buildmd $1 glad
 buildmd $1 glm -DBUILD_SHARED_LIBS=OFF -DGLM_BUILD_TESTS=OFF
-# buildmd $1 SDL3 -DSDL_SHARED=ON -DSDL_STATIC=ON
+buildmd $1 SDL3 -DSDL_STATIC=ON -DSDL_SHARED=OFF \
+                -DSDL_LIBC=ON -DSDL_TEST_LIBRARY=OFF -DSDL_TESTS=OFF
 
 # temp=$thisdir/install/.lib
 # actual=$thisdir/install/lib
@@ -36,7 +42,7 @@ buildmd $1 glm -DBUILD_SHARED_LIBS=OFF -DGLM_BUILD_TESTS=OFF
 
 
 # #!/bin/bash
-# export CMAKE_POLICY_VERSION_MINIMUM=3.11
+# export CMAKE_POLICY_VERSION_MINIMUM=3.21
 # thisdir=$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 # buildmd()

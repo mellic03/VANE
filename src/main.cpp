@@ -17,8 +17,7 @@ namespace fs = std::filesystem;
 
 bool DoTheImportThing( const std::string &pFile )
 {
-    if (pFile[0]) {  }
-    return true;
+    if (pFile[0]) {  } return true;
 
     // // Create an instance of the Importer class
     // Assimp::Importer importer;
