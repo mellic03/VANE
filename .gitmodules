@@ -1,9 +1,9 @@
 [submodule "external/SDL3"]
-	path = external/submodule/SDL3
+	path = 3rdparty/SDL3
 	url = https://github.com/libsdl-org/SDL.git
 [submodule "external/assimp"]
-	path = external/submodule/assimp
+	path = 3rdparty/assimp
 	url = https://github.com/assimp/assimp.git
 [submodule "external/glm"]
-	path = external/submodule/glm
+	path = 3rdparty/glm
 	url = https://github.com/g-truc/glm.git

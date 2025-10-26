@@ -8,8 +8,8 @@ vanebuild()
 
     local buildtype=$1
     local cmake_flag=""
-    local buildpath="$thisdir/build/cmake_$buildtype/"
-    local installpath="$thisdir/VaneEngine$buildtype/"
+    local buildpath="$thisdir/build/CMake/$buildtype/"
+    local installpath="$thisdir/build/$buildtype/"
 
     mkdir -p {$buildpath,$installpath}
 
@@ -19,6 +19,9 @@ vanebuild()
 
     cmake --build $buildpath -j8
     cmake --install $buildpath
+
+    $installpath/bin/vpkg -i $thisdir/vane/vroot/engine -o $installpath/engine.pkg
+
 }
 
 if [ "$#" = "0" ]; then
@@ -68,3 +71,7 @@ else
         vanebuild Release
     fi
 fi
+
+
+source $thisdir/vane/vaneroot/env.sh
+

@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
 
-project(vane_all)
-
-set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-set(CMAKE_INSTALL_RPATH "$ORIGIN")
+project(VaneEngine)
 
 add_definitions(
     "-DASSIMP_BUILD_TESTS=OFF"
@@ -19,25 +16,39 @@ add_definitions(
     # "-DSDL_DISABLE_INSTALL_DOCS=ON"
 )
 
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+set(CMAKE_INSTALL_RPATH "$ORIGIN")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_INSTALL_PREFIX}/bin")
+
 find_package(OpenGL REQUIRED)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/submodule/glad" EXCLUDE_FROM_ALL)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/submodule/glm" EXCLUDE_FROM_ALL)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/submodule/SDL3" EXCLUDE_FROM_ALL)
 
-# set(GLM_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/submodule/glm)
-# find_package(glm REQUIRED)
-
-# set(SDL3_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/submodule/SDL3)
-
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/external/submodule/glad" EXCLUDE_FROM_ALL)
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/external/submodule/glm" EXCLUDE_FROM_ALL)
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/external/submodule/SDL3" EXCLUDE_FROM_ALL)
-# add_subdirectory("${CMAKE_SOURCE_DIR}/external")
-
-# find_package(SDL3 REQUIRED)
-# find_package(glad REQUIRED)
-# find_package(glm REQUIRED)
-
-add_subdirectory("${CMAKE_SOURCE_DIR}/vane/")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include/")
 
 
+add_executable(${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
+target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include/")
+
+target_link_libraries(
+    ${PROJECT_NAME} PRIVATE
+    SDL3::SDL3 OpenGL::GL glad glm vane_common
+    # zlib-static assimp
+)
+
+install(
+    TARGETS ${PROJECT_NAME}
+    RUNTIME DESTINATION "bin/"
+)
+
+install(
+    FILES 
+        "${CMAKE_CURRENT_SOURCE_DIR}/vroot/env.sh"
+        "${CMAKE_CURRENT_SOURCE_DIR}/vroot/vane.cfg"
+    DESTINATION "."
+)
 
 # set(VANE_SHARED_EXT ${CMAKE_SHARED_LIBRARY_SUFFIX})
 # set(VANE_STATIC_EXT ${CMAKE_STATIC_LIBRARY_SUFFIX})

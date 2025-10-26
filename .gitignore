@@ -1,11 +1,10 @@
 .directory
 .vscode
 build
-external/Debug
-external/Release
-external/install
-external/shaderc
-VaneEngineDebug
+3rdparty/Debug
+3rdparty/Release
+3rdparty/install
+3rdparty/shaderc
 include/GL
 include/SDL2
 lib
