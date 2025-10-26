@@ -15,7 +15,7 @@ namespace fs = std::filesystem;
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
 
-bool DoTheImportThing( const std::string &pFile)
+bool DoTheImportThing( const std::string &pFile )
 {
     // Create an instance of the Importer class
     Assimp::Importer importer;
@@ -36,6 +36,16 @@ bool DoTheImportThing( const std::string &pFile)
         return false;
     }
 
+    syslog log("DoTheImportThing");
+
+    log("mNumAnimations: %lu", scene->mNumAnimations);
+    log("mNumLights: %lu", scene->mNumLights);
+    log("mNumMeshes: %lu", scene->mNumMeshes);
+    log("mNumMaterials: %lu", scene->mNumMaterials);
+    log("mNumSkeletons: %lu", scene->mNumSkeletons);
+    log("mNumTextures: %lu", scene->mNumTextures);
+
+    // printf(scene.)
     // Now we can access the file's contents.
     // DoTheSceneProcessing( scene);
 
@@ -89,6 +99,8 @@ int main( int argc, char **argv )
     std::system(cmd.c_str());
 
     json_test();
+
+    DoTheImportThing("engine/model/unit-sphere.gltf");
 
 
     Platform platform;

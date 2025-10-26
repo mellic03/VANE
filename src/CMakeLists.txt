@@ -1,18 +1,35 @@
-# cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.11)
 
-# add_compile_options(--std=c++20 -fPIC ${VANE_COMPILE_OPTIONS})
+project(vanelib)
+find_package(OpenGL REQUIRED)
 
-# add_library(vane_core OBJECT)
-# add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/core/")
+add_library(vanelib OBJECT)
+add_subdirectory("core/")
+add_subdirectory("dsa/")
+add_subdirectory("gfx/")
+add_subdirectory("tooling/")
+add_subdirectory("util/")
+add_subdirectory("vfs/")
+add_subdirectory("world/")
 
-# add_library(vane_full STATIC $<TARGET_OBJECTS:vane_core>)
-# add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/dsa/")
-# add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/gfx/")
-# # add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/tooling/")
-# add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/util/")
-# add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vfs/")
-# add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/world/")
-# target_link_libraries(vane_full PUBLIC vane_core ${SDL2_OPENGL_LIBRARIES})
+target_compile_features(vanelib PUBLIC cxx_std_20)
+target_include_directories(vanelib PRIVATE
+    "${CMAKE_SOURCE_DIR}/include/"
+    "${CMAKE_SOURCE_DIR}/external/install/include/"
+)
 
-# add_executable(vane main.cpp $<TARGET_OBJECTS:vane_core> $<TARGET_OBJECTS:vane_full>)
-# target_link_libraries(vane PUBLIC vane_full ${SDL2_OPENGL_LIBRARIES})
+target_link_libraries(
+    vanelib PRIVATE SDL3 OpenGL::GL GLAD GLM
+)
+
+# install(TARGETS vane RUNTIME DESTINATION "bin/")
+
+# install(
+#     DIRECTORY "${IMPORTED_LIBDIR}/"
+#     DESTINATION "bin/"
+#     FILES_MATCHING
+#         PATTERN "*.so"
+#         PATTERN "*.so.*"
+# )
+
+# install(DIRECTORY "${CMAKE_SOURCE_DIR}/vaneroot/" DESTINATION ".")

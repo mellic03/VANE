@@ -3,22 +3,34 @@ cmake_policy(SET CMP0095 OLD) # CMake>=3.16 handles $ORIGIN escaping differently
 
 project(vane)
 
+add_definitions("-DBUILD_SHARED_LIBS=OFF")
+set(BUILD_SHARED_LIBS OFF)
+
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 set(CMAKE_INSTALL_RPATH "$ORIGIN")
 set(VANE_SHARED_EXT ${CMAKE_SHARED_LIBRARY_SUFFIX})
 set(VANE_STATIC_EXT ${CMAKE_STATIC_LIBRARY_SUFFIX})
 set(IMPORTED_LIBDIR "${CMAKE_SOURCE_DIR}/external/install/lib/")
 set(IMPORTED_INCDIR "${CMAKE_SOURCE_DIR}/external/install/include/")
-set(VANE_SHARED_DEPENDENCIES "${IMPORTED_LIBDIR}/libassimp.so")
 
-
-find_package(OpenGL REQUIRED)
 
 add_library(assimp SHARED IMPORTED)
 set_target_properties(assimp PROPERTIES
-    IMPORTED_LOCATION "${IMPORTED_LIBDIR}/libassimp.so"
+    IMPORTED_LOCATION "${IMPORTED_LIBDIR}/libassimpd.so"
     INTERFACE_INCLUDE_DIRECTORIES "${IMPORTED_INCDIR}"
 )
+# add_library(assimp-static STATIC IMPORTED)
+# set_target_properties(assimp-static PROPERTIES
+#     IMPORTED_LOCATION "${IMPORTED_LIBDIR}/libassimp.a"
+#     INTERFACE_INCLUDE_DIRECTORIES "${IMPORTED_INCDIR}"
+# )
+
+add_library(zlib-static SHARED IMPORTED)
+set_target_properties(zlib-static PROPERTIES
+    IMPORTED_LOCATION "${IMPORTED_LIBDIR}/libzlibstaticd.a"
+    INTERFACE_INCLUDE_DIRECTORIES "${IMPORTED_INCDIR}"
+)
+
 
 add_library(GLAD STATIC IMPORTED)
 set_target_properties(GLAD PROPERTIES
@@ -45,14 +57,9 @@ set_target_properties(SDL3-static PROPERTIES
 )
 
 
-add_executable(vane "src/main.cpp")
-add_subdirectory("src/core/")
-add_subdirectory("src/dsa/")
-add_subdirectory("src/gfx/")
-add_subdirectory("src/util/")
-add_subdirectory("src/vfs/")
-add_subdirectory("src/world/")
 
+add_subdirectory("${CMAKE_SOURCE_DIR}/src/")
+add_executable(vane "src/main.cpp")
 target_compile_features(vane PUBLIC cxx_std_20)
 target_include_directories(vane PRIVATE
     "${CMAKE_SOURCE_DIR}/include/"
@@ -60,7 +67,7 @@ target_include_directories(vane PRIVATE
 )
 
 target_link_libraries(
-    vane PUBLIC SDL3 OpenGL::GL GLAD GLM assimp
+    vane PRIVATE vanelib zlib-static assimp
 )
 
 install(TARGETS vane RUNTIME DESTINATION "bin/")
