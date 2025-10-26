@@ -26,11 +26,17 @@ buildmd()
     cmake --install $buildpath
 }
 
-# buildmd $1 assimp -DASSIMP_BUILD_TESTS=OFF -DASSIMP_INSTALL=ON -DASSIMP_BUILD_ZLIB=ON
-buildmd $1 glad
+buildmd $1 assimp -DBUILD_SHARED_LIBS=ON -DASSIMP_BUILD_ZLIB=ON
+buildmd $1 glad -DBUILD_SHARED_LIBS=OFF
 buildmd $1 glm -DBUILD_SHARED_LIBS=OFF -DGLM_BUILD_TESTS=OFF
-buildmd $1 SDL3 -DSDL_STATIC=ON -DSDL_SHARED=OFF \
-                -DSDL_LIBC=ON -DSDL_TEST_LIBRARY=OFF -DSDL_TESTS=OFF
+buildmd $1 SDL3 -DSDL_STATIC=ON -DSDL_SHARED=ON -DSDL_LIBC=ON
+
+
+# shaderc_dir=$thisdir/repo/shaderc/
+# cd $shaderc_dir
+# ./util/git-sync-deps
+# mkdir -p build && cd build
+# cmake -G Ninja -DCMAKE_BUILD_TYPE=$1 -DCMAKE_INSTALL_PREFIX=$thisdir/install_shaderc ../
 
 # temp=$thisdir/install/.lib
 # actual=$thisdir/install/lib

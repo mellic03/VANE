@@ -11,7 +11,7 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/world/")
 
 target_compile_features(vane_common PUBLIC cxx_std_20)
 target_link_libraries(
-    vane_common PUBLIC SDL3::SDL3-static OpenGL::GL mellic03::glad glm::glm
+    vane_common PUBLIC SDL3::SDL3 OpenGL::GL mellic03::glad glm::glm
 )
 
 
