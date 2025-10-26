@@ -4,19 +4,21 @@ thisdir=$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 vanebuild()
 {
-    local BuildType=$1
+    echo "[vanebuild] buildtype=$1"
+
+    local buildtype=$1
     local cmake_flag=""
-    local cmake_path="$thisdir/build/cmake_$BuildType/"
-    local vane_path="$thisdir/build/vane_$BuildType/"
+    local buildpath="$thisdir/build/cmake_$buildtype/"
+    local installpath="$thisdir/VaneEngine$buildtype/"
 
-    mkdir -p {$cmake_path,$vane_path}
+    mkdir -p {$buildpath,$installpath}
 
-    cmake -DCMAKE_BUILD_TYPE=$bdtype -DCMAKE_INSTALL_PREFIX=$vane_path \
-          -S $thisdir -B $cmake_path
+    cmake -DCMAKE_BUILD_TYPE=$buildtype -DCMAKE_INSTALL_PREFIX=$installpath \
+          -S $thisdir -B $buildpath
         #   -DCMAKE_TOOLCHAIN_FILE=x86_64-w64-mingw32.cmake
 
-    cmake --build $cmake_path -j8
-    cmake --install $cmake_path
+    cmake --build $buildpath -j8
+    cmake --install $buildpath
 }
 
 if [ "$#" = "0" ]; then
@@ -57,18 +59,12 @@ if [ "$bdext" = "1" ]; then
     if [ "$bdrel" = "1" ]; then
         external/build.sh Debug
     fi
-fi
 
-if [ "$bddbg" = "1" ]; then
-    vanebuild Debug
-    cd ./build/vane_Debug/
-    ./bin/vpkg -i ./engine -o engine.pkg
-    # rm -rf ./engine
-fi
-
-if [ "$bdrel" = "1" ]; then
-    vanebuild Release
-    cd ./build/vane_Release/
-    ./bin/vpkg -i ./engine -o engine.pkg
-    # rm -rf ./engine
+else
+    if [ "$bddbg" = "1" ]; then
+        vanebuild Debug
+    fi
+    if [ "$bdrel" = "1" ]; then
+        vanebuild Release
+    fi
 fi

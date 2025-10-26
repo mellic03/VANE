@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.11)
+# include_directories(${CMAKE_SOURCE_DIR}/include/)
 
-include_directories(${CMAKE_SOURCE_DIR}/include/)
+project(vanetools)
 
 add_executable(vpart vpart.cpp)
 target_link_libraries(vpart PUBLIC vanelib)
