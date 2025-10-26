@@ -1,6 +1,8 @@
 #include <vane/core/assert.hpp>
 #include <vane/util/file.hpp>
 #include <vane/vfs/archive.hpp>
+
+#include <SDL3/SDL.h>
 #include <filesystem>
 namespace fs = std::filesystem;
 
@@ -82,9 +84,12 @@ int main( int argc, char **argv )
         return 1;
     }
 
-    vane::PkgArchive PA;
-
     VANE_ASSERT(fs::exists(inpath), "Invalid path \"%s\"", inpath.c_str());
+
+
+    auto base = fs::path(SDL_GetBasePath());
+    // fs::current_path(base / fs::path("../"));
+    vane::PkgArchive PA;
 
     if (listmode == true)
     {
@@ -95,7 +100,6 @@ int main( int argc, char **argv )
         return 0;
     }
 
-
     if (fs::is_directory(inpath))
         readc_directory(PA, inpath);
     else
@@ -104,39 +108,6 @@ int main( int argc, char **argv )
 
     return 0;
 
-    // if (argc==3 && std::string(argv[1])=="-l")
-    // {
-    //     PA.load(std::string(argv[2]));
-    //     return 0;
-    // }
-
-    // for (int idx=1; idx<argc; idx++)
-    // {
-    //     std::string arg(argv[idx]);
-
-    //     if (arg=="-v" || arg=="--verbose")
-    //     {
-    //         vpkg_verbose = true;
-    //     }
-
-    //     else if ((arg=="-i" || arg=="--input") && idx+1 < argc)
-    //     {
-    //         src = fs::path(argv[++idx]);
-    //         VANE_ASSERT(fs::exists(src), "Invalid path \"%s\"", src.c_str());
-
-    //         if (fs::is_directory(src))
-    //             readc_directory(PA, src);
-    //         else
-    //             readc_file(PA, src);
-    //     }
-
-    //     else if ((arg=="-o" || arg=="--output") && idx+1 < argc)
-    //     {
-    //         dst = std::string(argv[++idx]);
-    //     }
-    // }
-
-    // PA.save(dst);
 }
 
 
@@ -144,8 +115,8 @@ int main( int argc, char **argv )
 static void readc_file( vane::PkgArchive &PA, std::filesystem::path path )
 {
     namespace fs = std::filesystem;
-    auto name = path.string();
-    auto data = vane::loadRaw(name);
+    auto name = fs::relative(path, inpath);
+    auto data = vane::loadRaw(path.string());
     PA.add(name, &data[0], data.size());
 }
 
