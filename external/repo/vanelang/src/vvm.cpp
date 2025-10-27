@@ -18,20 +18,36 @@ constexpr uint32_t vvmalignu( uint32_t x, uint32_t a )
 
 void vanevm::VmCtx::execute()
 {
-    char msgstr[12] = "Michael\n\0\0\0";
+    IP=0, SP=0, AC=0, AX=0, AY=0;
+
+    // char msgstr[12] = "Michael\n\0\0\0";
+    char msgstr[4] = "\n\0\0";
     auto *msgbuf = (uint32_t*)msgstr;
 
+    // uint32_t prg0[] = {
+    //     OP_PUSH, 5,
+    //     OP_PUSH, 7,
+    //     OP_MUL,
+    //     OP_POPA,
+    //     OP_OUTA,
+    //     OP_EXIT
+    // };
+
     uint32_t prg[] = {
-        // OP_PUSH, (uint32_t)50,
-        // OP_PUSH, (uint32_t)21,
-        // OP_MUL,
-        // OP_POPX,
-        // OP_OUTX,
-        OP_STX,  (uint32_t)512,  // mov AX, 512
-        OP_WTX,  msgbuf[0],      // mem[AX++] = Mich
-        OP_WTX,  msgbuf[1],      // mem[AX++] = ael\0
-        OP_WTX,  msgbuf[2],      // mem[AX++] = ael\0
-        OP_OUTS, (uint32_t)512,
+        OP_u32push, vvmcast<uint32_t>(1.0f/3.0f),
+        OP_u32push, vvmcast<uint32_t>(5.105f),
+        OP_f32mul,
+        OP_u32popX,
+        OP_f32printX,
+
+        OP_u32stX,     (uint32_t)512,
+        OP_u32writeX,  msgbuf[0],
+        OP_str08printX, (uint32_t)512,
+        // OP_STX,  (uint32_t)512,  // mov AX, 512
+        // OP_WTX,  msgbuf[0],      // mem[AX++] = Mich
+        // OP_WTX,  msgbuf[1],      // mem[AX++] = ael\0
+        // OP_WTX,  msgbuf[2],      // mem[AX++] = ael\0
+        // OP_OUTS, (uint32_t)512,
         OP_EXIT
     };
 
@@ -47,12 +63,7 @@ void vanevm::VmCtx::execute()
     #define DISPATCH() goto *jtab[mem[IP++]];
     #define FETCH()  mem[IP++]
 
-    #define BINARY_OP(Op) \
-    { \
-        auto UY = vstk[--SP]; \
-        auto UX = vstk[--SP]; \
-        vstk[SP++] = UX Op UY; \
-    }
+    #define BINARY_OP(Op) SP--; vstk[SP] = vstk[SP-1] Op vstk[SP-0]; \
 
     #define BINARY_FOP(Op) \
     { \
@@ -61,73 +72,65 @@ void vanevm::VmCtx::execute()
         vstk[SP++] = vvmcast<uint32_t>(FX Op FY); \
     }
 
-
-    IP=0, SP=0;
-    AC=0, AX=0, AY=0;
-
     DISPATCH();
 
 
 jtab_NONE: printf("Invalid opcode (%u)\n", mem[IP-1]); goto jtab_EXIT;
-jtab_NOP:                 DISPATCH();
-jtab_ADD:  BINARY_OP(+);  DISPATCH();
-jtab_SUB:  BINARY_OP(-);  DISPATCH();
-jtab_MUL:  BINARY_OP(*);  DISPATCH();
-jtab_DIV:  BINARY_OP(/);  DISPATCH();
-jtab_FADD: BINARY_FOP(+); DISPATCH();
-jtab_FSUB: BINARY_FOP(-); DISPATCH();
-jtab_FMUL: BINARY_FOP(*); DISPATCH();
-jtab_FDIV: BINARY_FOP(/); DISPATCH();
+jtab_NOP:                   DISPATCH();
+jtab_u32add: BINARY_OP(+);  DISPATCH();
+jtab_u32sub: BINARY_OP(-);  DISPATCH();
+jtab_u32mul: BINARY_OP(*);  DISPATCH();
+jtab_u32div: BINARY_OP(/);  DISPATCH();
+jtab_f32add: BINARY_FOP(+); DISPATCH();
+jtab_f32sub: BINARY_FOP(-); DISPATCH();
+jtab_f32mul: BINARY_FOP(*); DISPATCH();
+jtab_f32div: BINARY_FOP(/); DISPATCH();
 
 #define OPDEF_NAXY(Nm) \
-    jtab_##Nm:    {FnDef(mem[IP++])} DISPATCH();\
-    jtab_##Nm##A: {FnDef(AC)} DISPATCH();\
-    jtab_##Nm##X: {FnDef(AX)} DISPATCH();\
+    jtab_##Nm:    {FnDef(mem[IP++])} DISPATCH(); \
+    jtab_##Nm##A: {FnDef(AC)} DISPATCH(); \
+    jtab_##Nm##X: {FnDef(AX)} DISPATCH(); \
     jtab_##Nm##Y: {FnDef(AY)} DISPATCH();
 
 #define OPDEF_AXY(Nm) \
-    jtab_##Nm##A: {FnDef(AC)} DISPATCH();\
-    jtab_##Nm##X: {FnDef(AX)} DISPATCH();\
+    jtab_##Nm##A: {FnDef(AC)} DISPATCH(); \
+    jtab_##Nm##X: {FnDef(AX)} DISPATCH(); \
     jtab_##Nm##Y: {FnDef(AY)} DISPATCH();
 
 // PUSH
 #define FnDef(Rg) vstk[SP++] = Rg;
-OPDEF_NAXY(PUSH);
+OPDEF_NAXY(u32push);
 #undef FnDef
 
 // POP
 #define FnDef(Rg) Rg = vstk[SP++];
-OPDEF_NAXY(POP);
+OPDEF_NAXY(u32pop);
 #undef FnDef
 
 // ST{A,X,Y}
 #define FnDef(Rg) Rg = FETCH();
-OPDEF_AXY(ST);
+OPDEF_AXY(u32st);
 #undef FnDef
 
 // WT{A,X,Y}
 #define FnDef(Rg) mem[Rg++] = FETCH();
-OPDEF_AXY(WT);
+OPDEF_AXY(u32write);
 #undef FnDef
 
-// OUT{A,X,Y}
-#define FnDef(Rg) printf("%u", Rg);
-OPDEF_AXY(OUT);
+#define FnDef(Rg) printf("%u", vvmcast<uint32_t>(Rg));
+OPDEF_NAXY(u32print);
 #undef FnDef
 
-jtab_OUTC: { // print four chars starting at mem[dword]
-    auto *base = (const char*)(mem + FETCH());
-    for (int i=0; i<4; i++)
-        printf("%c", base[i]);
-}   DISPATCH();
+#define FnDef(Rg) printf("%d", vvmcast<int32_t>(Rg));
+OPDEF_NAXY(i32print);
+#undef FnDef
 
-jtab_OUTU: { // print dword
-    printf("%u", FETCH());
-}   DISPATCH();
+#define FnDef(Rg) printf("%f", vvmcast<float>(Rg));
+OPDEF_NAXY(f32print);
+#undef FnDef
 
-jtab_OUTS: { // print string starting at mem[dword]
-    printf("%s", (const char*)(mem + FETCH()));
-}   DISPATCH();
+// print string starting at mem[dword]
+jtab_str08printX: printf("%s", (const char*)(mem + FETCH())); DISPATCH();
 
 
 jtab_JMP: {
