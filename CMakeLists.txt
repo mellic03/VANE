@@ -37,6 +37,7 @@ include_directories("${CMAKE_SOURCE_DIR}/include/" "${IMPORTED_INCLUDE_DIR}")
 find_package(OpenGL REQUIRED)
 find_package(assimp REQUIRED PATHS "${IMPORTED_LIBRARY_DIR}/cmake/assimp-6.0" NO_DEFAULT_PATH)
 find_package(SDL3 REQUIRED PATHS "${IMPORTED_LIBRARY_DIR}/cmake/SDL3" NO_DEFAULT_PATH)
+find_package(vanevm REQUIRED PATHS "${IMPORTED_LIBRARY_DIR}/cmake/vanevm" NO_DEFAULT_PATH)
 VaneImport(SHARED glad libglad)
 VaneImport(SHARED glm libglm)
 
@@ -46,7 +47,12 @@ add_subdirectory("${CMAKE_SOURCE_DIR}/src/")
 add_executable(VaneEngine "${CMAKE_SOURCE_DIR}/src/main.cpp")
 set_target_properties(VaneEngine PROPERTIES OUTPUT_NAME "vane")
 target_compile_features(VaneEngine PUBLIC cxx_std_20)
-target_link_libraries(VaneEngine PUBLIC glad vane_common SDL3::SDL3-shared assimp::assimp)
+
+target_link_libraries(
+    VaneEngine PUBLIC
+    glad vane_common SDL3::SDL3-shared
+    assimp::assimp vanevm::vanevm
+)
 
 file(
     COPY "${IMPORTED_LIBRARY_DIR}/libglad.so"

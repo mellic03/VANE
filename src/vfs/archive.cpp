@@ -1,7 +1,7 @@
 #include <vane/vfs/archive.hpp>
+#include <vane/core/assert.hpp>
 #include <vane/core/log.hpp>
 #include <vane/util/file.hpp>
-#include <vane/core/assert.hpp>
 
 #include <fstream>
 #include <cstring>

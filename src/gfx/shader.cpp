@@ -1,61 +1,9 @@
 #include <vane/core/gl.hpp>
-#include <vane/gfx/shader.hpp>
 #include <vane/core/assert.hpp>
 #include <vane/util/file.hpp>
 #include <fstream>
 
 using namespace vane;
-
-
-void gfx::ShaderArchive::openArchive( const std::string &path )
-{
-    std::string str = loadRaw(path);
-    std::string name, data;
-
-    auto *buf = reinterpret_cast<uint8_t*>(&str[0]);
-    auto *H = (ArchiveHeader*)buf;
-    auto *A = (ArchiveData*)(H->data);
-
-    for (size_t i=0; i<H->nshaders; i++)
-    {
-        name.resize(A->namesize);
-        data.resize(A->datasize);
-
-        memcpy(&name[0], A->data+0, A->namesize);
-        memcpy(&data[0], A->data+A->namesize, A->datasize);
-
-        mShaders.push_back({name, data});
-
-        A = (ArchiveData*)(A->data + A->namesize + A->datasize);
-    }
-}
-
-
-void gfx::ShaderArchive::saveArchive( const std::string &path )
-{
-    std::ofstream stream(path, std::ofstream::binary);
-    VANE_ASSERT(stream.is_open(), "Error opening file.");
-
-    size_t nshaders = mShaders.size();
-    stream.write((const char*)(&nshaders), sizeof(size_t));
-
-    for (auto &[name, data]: mShaders)
-    {
-        size_t nsize = name.size();
-        size_t dsize = data.size();
-        stream.write((const char*)(&nsize), sizeof(size_t));
-        stream.write((const char*)(&dsize), sizeof(size_t));
-        stream.write(name.c_str(), nsize);
-        stream.write(data.c_str(), dsize);
-    }
-}
-
-
-void gfx::ShaderArchive::addFile( const std::string &path )
-{
-    mShaders.push_back({path, vane::loadRaw(path)});
-}
-
 
 
 void rerere()

@@ -20,10 +20,9 @@ buildmd()
     local defines=$@
 
     mkdir -p $buildpath
-    cmake -DCMAKE_BUILD_TYPE=$buildtype -DCMAKE_INSTALL_PREFIX=$installpath $defines \
-          -S $srcpath -B $buildpath
-    cmake --build $buildpath  -j8
-    cmake --install $buildpath
+    cmake -S $srcpath -B $buildpath -DCMAKE_BUILD_TYPE=$buildtype $defines
+    cmake --build $buildpath -j8
+    cmake --install $buildpath --prefix $installpath
 }
 
 arg0=$1
@@ -35,6 +34,7 @@ buildmd $arg0 assimp -DBUILD_SHARED_LIBS=ON -DASSIMP_BUILD_ZLIB=OFF
 buildmd $arg0 glad -DBUILD_SHARED_LIBS=ON
 buildmd $arg0 glm -DBUILD_SHARED_LIBS=ON -DGLM_BUILD_TESTS=OFF
 buildmd $arg0 SDL3 -DSDL_STATIC=OFF -DSDL_SHARED=ON -DSDL_LIBC=ON
+buildmd $arg0 vanelang
 
 
 # shaderc_dir=$thisdir/repo/shaderc/
