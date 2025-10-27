@@ -37,11 +37,11 @@ include_directories("${CMAKE_SOURCE_DIR}/include/" "${IMPORTED_INCLUDE_DIR}")
 find_package(OpenGL REQUIRED)
 find_package(assimp REQUIRED PATHS "${IMPORTED_LIBRARY_DIR}/cmake/assimp-6.0" NO_DEFAULT_PATH)
 find_package(SDL3 REQUIRED PATHS "${IMPORTED_LIBRARY_DIR}/cmake/SDL3" NO_DEFAULT_PATH)
-find_package(vanevm REQUIRED PATHS "${IMPORTED_LIBRARY_DIR}/cmake/vanevm" NO_DEFAULT_PATH)
+# find_package(vanevm REQUIRED PATHS "${IMPORTED_LIBRARY_DIR}/cmake/vanevm" NO_DEFAULT_PATH)
 VaneImport(SHARED glad libglad)
 VaneImport(SHARED glm libglm)
 
-# add_subdirectory("${CMAKE_SOURCE_DIR}/external/repo/SDL3/")
+# add_subdirectory("${CMAKE_SOURCE_DIR}/external/submodule/SDL/")
 add_subdirectory("${CMAKE_SOURCE_DIR}/src/")
 
 add_executable(VaneEngine "${CMAKE_SOURCE_DIR}/src/main.cpp")
@@ -51,7 +51,7 @@ target_compile_features(VaneEngine PUBLIC cxx_std_20)
 target_link_libraries(
     VaneEngine PUBLIC
     glad vane_common SDL3::SDL3-shared
-    assimp::assimp vanevm::vanevm
+    assimp::assimp # vanevm::vanevm
 )
 
 file(
@@ -73,6 +73,9 @@ install(FILES $<TARGET_RUNTIME_DLLS:VaneEngine> DESTINATION "bin")
 
 install(
     FILES
+        "${IMPORTED_LIBRARY_DIR}/libassimp.so"
+        "${IMPORTED_LIBRARY_DIR}/libassimp.so.6"
+        "${IMPORTED_LIBRARY_DIR}/libassimp.so.6.0.2"
         "${IMPORTED_LIBRARY_DIR}/libglad.so"
         "${IMPORTED_LIBRARY_DIR}/libglm.so"
     DESTINATION "bin"

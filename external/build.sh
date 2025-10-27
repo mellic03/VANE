@@ -6,15 +6,21 @@ buildmd()
 {
     cd $thisdir
 
-    local installpath=install
-    if [ "$1" = "Debug" ]; then
-        installpath+=d
-    fi
-
     local buildtype=$1
     local srcpath=submodule/$2
-    local buildpath=build/${buildtype,,}/$2
-    local buildpath=build/${buildtype,,}/$2
+    local buildpath=build
+    local installpath=install
+
+    if [ "$1" = "Release" ]; then
+        buildpath=$thisdir/build/$2
+        installpath=$thisdir/install
+    elif [ "$1" = "Debug" ]; then
+        buildpath=$thisdir/build_d/$2
+        installpath=$thisdir/install_d
+    else
+        echo "Incorrect usage: $thisdir"
+        exit 1
+    fi
 
     shift 2
     local defines=$@
@@ -33,7 +39,7 @@ fi
 buildmd $arg0 assimp -DBUILD_SHARED_LIBS=ON -DASSIMP_BUILD_ZLIB=OFF
 buildmd $arg0 glad -DBUILD_SHARED_LIBS=ON
 buildmd $arg0 glm -DBUILD_SHARED_LIBS=ON -DGLM_BUILD_TESTS=OFF
-buildmd $arg0 SDL3 -DSDL_STATIC=OFF -DSDL_SHARED=ON -DSDL_LIBC=ON
+buildmd $arg0 SDL -DSDL_STATIC=OFF -DSDL_SHARED=ON -DSDL_LIBC=ON
 buildmd $arg0 vanelang
 
 

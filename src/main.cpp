@@ -100,8 +100,6 @@ static void json_test()
 
 VaneService *loadService( VaneApp*, const char* );
 
-#include <vanevm/vvm.hpp>
-
 int main( int argc, char **argv )
 {
     auto base = fs::path(SDL_GetBasePath());
@@ -122,9 +120,6 @@ int main( int argc, char **argv )
     VaneApp *V = new VaneApp(platform);
 
     V->addService<GfxService>();
-
-    vanevm::VmCtx ctx;
-    ctx.execute();
 
     // for (auto &entry: fs::recursive_directory_iterator(fs::path("./bin/srv/")))
     // {

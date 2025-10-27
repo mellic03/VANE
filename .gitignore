@@ -2,8 +2,9 @@
 .vscode
 build
 external/build
+external/build_d
 external/install
-external/installd
+external/install_d
 external/shaderc
 external/submodule2
 
