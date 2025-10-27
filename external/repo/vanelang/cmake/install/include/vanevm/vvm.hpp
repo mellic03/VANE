@@ -12,47 +12,56 @@ namespace vanevm
         X(NONE) \
         X(NOP) \
         \
-        X(ADD) \
-        X(SUB) \
-        X(MUL) \
-        X(DIV) \
-        X(FADD) \
-        X(FSUB) \
-        X(FMUL) \
-        X(FDIV) \
+        X(u32add) \
+        X(u32sub) \
+        X(u32mul) \
+        X(u32div) \
+        X(f32add) \
+        X(f32sub) \
+        X(f32mul) \
+        X(f32div) \
         \
-        X(PUSH) \
-        X(PUSHA) \
-        X(PUSHX) \
-        X(PUSHY) \
+        X(u32push) \
+        X(u32pushA) \
+        X(u32pushX) \
+        X(u32pushY) \
         \
-        X(POP) \
-        X(POPA) \
-        X(POPX) \
-        X(POPY) \
+        X(u32pop) \
+        X(u32popA) \
+        X(u32popX) \
+        X(u32popY) \
         \
-        X(STA) \
-        X(STX) \
-        X(STY) \
+        X(u32stA) \
+        X(u32stX) \
+        X(u32stY) \
         \
-        X(WTA) \
-        X(WTX) \
-        X(WTY) \
+        X(u32writeA) \
+        X(u32writeX) \
+        X(u32writeY) \
         \
-        X(OUTA) \
-        X(OUTX) \
-        X(OUTY) \
+        X(u32print) \
+        X(u32printA) \
+        X(u32printX) \
+        X(u32printY) \
         \
-        X(OUTC) \
-        X(OUTU) \
-        X(OUTS) \
+        X(i32print) \
+        X(i32printA) \
+        X(i32printX) \
+        X(i32printY) \
+        \
+        X(f32print) \
+        X(f32printA) \
+        X(f32printX) \
+        X(f32printY) \
+        \
+        X(strprintX) \
         \
         X(JMP) \
         X(CALL) \
         X(RET) \
         X(EXIT)
 
-    enum OP_: uint32_t
+    enum OP_: uint8_t
     {
         #define X(Nm) OP_##Nm,
         VVM_OPNAMES
@@ -76,7 +85,8 @@ private:
         T pop()
         {
             assert((!std::stack<T>::empty()));
-            T x=std::stack<T>::top(); pop();
+            T x=std::stack<T>::top();
+            std::stack<T>::pop();
             return x;
         }
     };
@@ -88,10 +98,7 @@ private:
         // uint32_t *prev;
     };
 
-    uint32_t  IP;
-    uint32_t  SP;
-    uint32_t  AC, AX, AY, AZ, AW;
-    uint32_t  ANull;
+    uint32_t IP, SP, AC, AX, AY;
     uint32_t *vstk = new uint32_t[1024];
     VmStack<StackFrame> cstk; // call stack
     

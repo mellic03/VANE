@@ -33,16 +33,18 @@ void vanevm::VmCtx::execute()
     //     OP_EXIT
     // };
 
+    // #define _u32push(Val) OP_u32push, vvmcast<uint32_t>(Val)
+
     uint32_t prg[] = {
+        // _u32push(1.0f/3.0f),
         OP_u32push, vvmcast<uint32_t>(1.0f/3.0f),
         OP_u32push, vvmcast<uint32_t>(5.105f),
         OP_f32mul,
         OP_u32popX,
         OP_f32printX,
-
         OP_u32stX,     (uint32_t)512,
         OP_u32writeX,  msgbuf[0],
-        OP_str08printX, (uint32_t)512,
+        OP_strprintX,  (uint32_t)512,
         // OP_STX,  (uint32_t)512,  // mov AX, 512
         // OP_WTX,  msgbuf[0],      // mem[AX++] = Mich
         // OP_WTX,  msgbuf[1],      // mem[AX++] = ael\0
@@ -63,17 +65,12 @@ void vanevm::VmCtx::execute()
     #define DISPATCH() goto *jtab[mem[IP++]];
     #define FETCH()  mem[IP++]
 
-    #define BINARY_OP(Op) SP--; vstk[SP] = vstk[SP-1] Op vstk[SP-0]; \
-
-    #define BINARY_FOP(Op) \
-    { \
-        float FY = vvmcast<float>(vstk[--SP]); \
-        float FX = vvmcast<float>(vstk[--SP]); \
-        vstk[SP++] = vvmcast<uint32_t>(FX Op FY); \
-    }
+    #define FCST(Idx) vvmcast<float, uint32_t>(vstk[Idx])
+    #define UCST(Val) vvmcast<uint32_t, float>(Val)
+    #define BINARY_OP(Op)  { SP--; vstk[SP] = vstk[SP-1] Op vstk[SP-0]; }
+    #define BINARY_FOP(Op) { SP--; vstk[SP] = UCST(FCST(SP-1) Op FCST(SP-0)); }
 
     DISPATCH();
-
 
 jtab_NONE: printf("Invalid opcode (%u)\n", mem[IP-1]); goto jtab_EXIT;
 jtab_NOP:                   DISPATCH();
@@ -130,7 +127,7 @@ OPDEF_NAXY(f32print);
 #undef FnDef
 
 // print string starting at mem[dword]
-jtab_str08printX: printf("%s", (const char*)(mem + FETCH())); DISPATCH();
+jtab_strprintX: printf("%s", (const char*)(mem + FETCH())); DISPATCH();
 
 
 jtab_JMP: {

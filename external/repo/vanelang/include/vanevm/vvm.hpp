@@ -54,7 +54,7 @@ namespace vanevm
         X(f32printX) \
         X(f32printY) \
         \
-        X(str08printX) \
+        X(strprintX) \
         \
         X(JMP) \
         X(CALL) \
