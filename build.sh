@@ -2,6 +2,12 @@
 export CMAKE_POLICY_VERSION_MINIMUM=3.21
 thisdir=$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
+# git submodule add https://github.com/assimp/assimp.git external/submodule/assimp
+# git submodule add https://github.com/mellic03/glad.git external/submodule/glad
+# git submodule add https://github.com/g-truc/glm.git external/submodule/glm
+# git submodule add https://github.com/libsdl-org/SDL.git external/submodule/SDL
+# git submodule add https://github.com/TinyCC/tinycc.git external/submodule/tinycc
+
 vanebuild()
 {
     echo "[vanebuild] buildtype=$1"
