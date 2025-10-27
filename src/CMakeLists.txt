@@ -1,5 +1,7 @@
 project(vane_common)
-include_directories( "${CMAKE_SOURCE_DIR}/include/")
+include_directories("${CMAKE_SOURCE_DIR}/include/")
+link_directories("${CMAKE_SOURCE_DIR}/external/install/lib")
+
 
 add_library(vane_common OBJECT)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/core/")
@@ -19,8 +21,6 @@ target_link_libraries(
 
 
 project(vanetools VERSION ${VANE_VERSION})
-include_directories( "${CMAKE_SOURCE_DIR}/include/")
-
 add_executable(vpart "${CMAKE_CURRENT_SOURCE_DIR}/vpart.cpp")
 add_executable(vpkg "${CMAKE_CURRENT_SOURCE_DIR}/vpkg.cpp")
 add_executable(vukg "${CMAKE_CURRENT_SOURCE_DIR}/vukg.cpp")
@@ -33,3 +33,13 @@ install(
     TARGETS vpart vpkg vukg
     RUNTIME DESTINATION "bin/"
 )
+
+
+
+
+project(tcctools VERSION ${VANE_VERSION})
+add_executable(tccdemo "${CMAKE_SOURCE_DIR}/src/tccdemo.cpp")
+target_link_libraries(tccdemo PUBLIC tcc)
+install(TARGETS tccdemo RUNTIME DESTINATION "bin")
+
+
