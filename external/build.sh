@@ -12,7 +12,7 @@ buildmd()
     fi
 
     local buildtype=$1
-    local srcpath=repo/$2
+    local srcpath=submodule/$2
     local buildpath=build/${buildtype,,}/$2
     local buildpath=build/${buildtype,,}/$2
 
@@ -39,7 +39,7 @@ buildmd $arg0 vanelang
 
 tccpath=$thisdir/install
 if [ ! -d "$tccpath/bin/tcc" ]; then
-    cd ./repo/tinycc && ./configure --prefix=$tccpath --ext-prefix=$tccpath
+    cd ./submodule/tinycc && ./configure --prefix=$tccpath --ext-prefix=$tccpath
     make && make install
 fi
 
