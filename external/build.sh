@@ -37,6 +37,14 @@ buildmd $arg0 SDL3 -DSDL_STATIC=OFF -DSDL_SHARED=ON -DSDL_LIBC=ON
 buildmd $arg0 vanelang
 
 
+tccpath=$thisdir/install
+if [ ! -d "$tccpath/bin/tcc" ]; then
+    cd ./repo/tinycc && ./configure --prefix=$tccpath --ext-prefix=$tccpath
+    make && make install
+fi
+
+
+
 # shaderc_dir=$thisdir/repo/shaderc/
 # cd $shaderc_dir
 # ./util/git-sync-deps

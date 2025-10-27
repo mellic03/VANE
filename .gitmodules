@@ -10,3 +10,6 @@
 [submodule "external/repo/glad"]
 	path = external/repo/glad
 	url = https://github.com/mellic03/glad.git
+[submodule "external/repo/tinycc"]
+	path = external/repo/tinycc
+	url = https://github.com/TinyCC/tinycc.git
