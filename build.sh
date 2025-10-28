@@ -11,7 +11,7 @@ thisdir=$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 vanebuild()
 {
     local buildtype=$1
-    local cmakepath=$thisdir/build/cmake/$1
+    local cmakepath=$thisdir/build/cmake/${1,,}
     local installpath=$thisdir/build/${1,,}
     local libpath=$thisdir/external/install/${1,,}
 
