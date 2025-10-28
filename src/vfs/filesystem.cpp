@@ -55,6 +55,11 @@ size_t vanefs::PkgFsReader::size( File fh )
 
 
 
+vanefs::StdFsReader::StdFsReader( const char *wdpath )
+{
+    mBase = std::string(wdpath);
+}
+
 bool vanefs::StdFsReader::exists( const char *filepath )
 {
     return std::filesystem::exists(std::filesystem::path(filepath));
@@ -62,15 +67,26 @@ bool vanefs::StdFsReader::exists( const char *filepath )
 
 vanefs::File vanefs::StdFsReader::open( const char *filepath )
 {
-    return std::fopen(filepath, "r");
+    auto cwd = std::filesystem::current_path();
+    auto path = mBase + "/" + std::string(filepath);
+    return std::fopen(path.c_str(), "r");
 }
 
 size_t vanefs::StdFsReader::read( File fh, size_t offset, void *dst, size_t n )
 {
-    return std::fread(dst, offset, n, (FILE*)fh);
+    std::fseek((FILE*)fh, offset, SEEK_SET);
+    return std::fread(dst, 1, n, (FILE*)fh);
 }
+
+size_t vanefs::StdFsReader::size( File fh )
+{
+    std::fseek((FILE*)fh, 0, SEEK_END);
+    return std::ftell((FILE*)fh);
+}
+
 
 size_t vanefs::StdFsWriter::write( File fh, size_t offset, void *src, size_t n )
 {
-    return std::fwrite(src, offset, n, (FILE*)fh);
+    std::fseek((FILE*)fh, offset, SEEK_SET);
+    return std::fwrite(src, 1, n, (FILE*)fh);
 }

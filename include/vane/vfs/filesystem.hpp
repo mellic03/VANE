@@ -99,11 +99,14 @@ private:
 class vanefs::StdFsReader: public iFileReader
 {
 public:
+    StdFsReader( const char *wdpath );
     virtual bool exists( const char* ) final;
-    virtual File open( const char* ) = 0;
+    virtual File open( const char* ) final;
     virtual size_t read( File, size_t, void *dst, size_t n ) final;
+    virtual size_t size( File ) final;
 
 private:
+    std::string mBase;
 
 };
 

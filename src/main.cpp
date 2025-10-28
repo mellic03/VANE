@@ -8,7 +8,8 @@ using namespace vane;
 
 #include <vane/vfs/archive.hpp>
 #include <vane/vfs/filesystem.hpp>
-static vanefs::PkgFsReader vnFS("vdata.pkg");
+static vanefs::iFileReader *vnFS = new vanefs::StdFsReader("vdata");
+// static vanefs::iFileReader *vnFS = new vanefs::PkgFsReader("vdata.pkg");
 
 
 #include <filesystem>
@@ -83,14 +84,19 @@ static void json_services( json &data )
 static void json_test()
 {
     // auto [base, size, zzz] = vnFS.open("init.json");
-    auto *fh = vnFS.open("init.json");
+    auto *fh = vnFS->open("init.json");
     if (!fh)
     {
         return;
     }
 
-    auto *base = (char*)vnFS.base(fh);
-    json data = json::parse(base, base+vnFS.size(fh));
+    size_t size = vnFS->size(fh);
+    char  *base = new char[size];
+    printf("[json_test] Opened file, %lu bytes\n", size);
+    vnFS->read(fh, 0, base, vnFS->size(fh));
+
+    // auto *base = (char*)vnFS.base(fh);
+    json data = json::parse(base, base+size);
     for (auto &[key, val]: data.items())
     {
         if (key == "services")
