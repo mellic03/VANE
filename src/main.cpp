@@ -7,7 +7,8 @@
 using namespace vane;
 
 #include <vane/vfs/archive.hpp>
-static vane::PkgArchive VaneArchive;
+#include <vane/vfs/filesystem.hpp>
+static vanefs::PkgFsReader vnFS("vdata.pkg");
 
 
 #include <filesystem>
@@ -81,13 +82,15 @@ static void json_services( json &data )
 
 static void json_test()
 {
-    auto [base, size, zzz] = VaneArchive.open("init.json");
-    if (!base)
+    // auto [base, size, zzz] = vnFS.open("init.json");
+    auto *fh = vnFS.open("init.json");
+    if (!fh)
     {
         return;
     }
 
-    json data = json::parse(base, base+size);
+    auto *base = (char*)vnFS.base(fh);
+    json data = json::parse(base, base+vnFS.size(fh));
     for (auto &[key, val]: data.items())
     {
         if (key == "services")
@@ -109,8 +112,6 @@ int main( int argc, char **argv )
 
     // std::string cmd = "export LD_LIBRARY_PATH=" + std::string(SDL_GetBasePath());
     // std::system(cmd.c_str());
-
-    VaneArchive.load("vdata.pkg");
     json_test();
 
     DoTheImportThing("engine/model/unit-sphere.gltf");

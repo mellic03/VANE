@@ -40,7 +40,7 @@ public:
 
     struct FileHandle
     {
-        const char *data;
+        char *data;
         size_t size;
         const char *name;
 

@@ -4,16 +4,17 @@ set(VANE_VERSION 0.0.1)
 project(vane VERSION ${VANE_VERSION})
 add_definitions(-DVANE_VERSION="${VANE_VERSION}")
 
-set(VANE_SHARED_EXT ${CMAKE_SHARED_LIBRARY_SUFFIX})
-set(VANE_STATIC_EXT ${CMAKE_STATIC_LIBRARY_SUFFIX})
-set(IMPORTED_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/install/include")
-set(IMPORTED_LIBRARY_DIR "${CMAKE_SOURCE_DIR}/external/install/lib")
+set(VANE_INSTALL_DIR "${CMAKE_SOURCE_DIR}/build_d/install_d")
+set(VANE_INSTALL_INCLUDE_DIR "${VANE_INSTALL_DIR}/include")
+set(VANE_INSTALL_LIBRARY_DIR "${VANE_INSTALL_DIR}/lib")
+
+set(VANE_EXTERN_INSTALL_DIR "${CMAKE_SOURCE_DIR}/external/install_d")
+set(VANE_EXTERN_INCLUDE_DIR "${VANE_EXTERN_INSTALL_DIR}/include")
+set(VANE_EXTERN_LIBRARY_DIR "${VANE_EXTERN_INSTALL_DIR}/lib")
+
 
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-set(CMAKE_INSTALL_RPATH
-    "$ORIGIN"
-    "${IMPORTED_LIBRARY_DIR}"
-)
+set(CMAKE_INSTALL_RPATH "$ORIGIN" "${VANE_EXTERN_LIBRARY_DIR}")
 
 macro (VaneImport libtype libname filename)
     if(${libtype} STREQUAL "STATIC")
@@ -26,20 +27,20 @@ macro (VaneImport libtype libname filename)
     add_library(${libname} ${libtype} IMPORTED)
     set_target_properties(
         ${libname} PROPERTIES
-        IMPORTED_LOCATION "${IMPORTED_LIBRARY_DIR}/${fname}"
-        INTERFACE_INCLUDE_DIRECTORIES "${IMPORTED_INCLUDE_DIR}"
+        IMPORTED_LOCATION "${VANE_EXTERN_LIBRARY_DIR}/${fname}"
+        INTERFACE_INCLUDE_DIRECTORIES "${VANE_EXTERN_INCLUDE_DIR}"
     )
 endmacro()
 
 
-include_directories("${CMAKE_SOURCE_DIR}/include/" "${IMPORTED_INCLUDE_DIR}")
+include_directories("${CMAKE_SOURCE_DIR}/include/" "${VANE_EXTERN_INCLUDE_DIR}")
 
 find_package(OpenGL REQUIRED)
-find_package(assimp REQUIRED PATHS "${IMPORTED_LIBRARY_DIR}/cmake/assimp-6.0" NO_DEFAULT_PATH)
-find_package(SDL3 REQUIRED PATHS "${IMPORTED_LIBRARY_DIR}/cmake/SDL3" NO_DEFAULT_PATH)
-# find_package(vanevm REQUIRED PATHS "${IMPORTED_LIBRARY_DIR}/cmake/vanevm" NO_DEFAULT_PATH)
-VaneImport(SHARED glad libglad)
-VaneImport(SHARED glm libglm)
+find_package(assimp REQUIRED PATHS "${VANE_EXTERN_LIBRARY_DIR}/cmake/assimp-6.0" NO_DEFAULT_PATH)
+find_package(SDL3 REQUIRED PATHS "${VANE_EXTERN_LIBRARY_DIR}/cmake/SDL3" NO_DEFAULT_PATH)
+# find_package(vanevm REQUIRED PATHS "${VANE_EXTERN_LIBRARY_DIR}/cmake/vanevm" NO_DEFAULT_PATH)
+VaneImport(STATIC glad libglad)
+VaneImport(STATIC glm libglm)
 
 # add_subdirectory("${CMAKE_SOURCE_DIR}/external/submodule/SDL/")
 add_subdirectory("${CMAKE_SOURCE_DIR}/src/")
@@ -49,37 +50,21 @@ set_target_properties(VaneEngine PROPERTIES OUTPUT_NAME "vane")
 target_compile_features(VaneEngine PUBLIC cxx_std_20)
 
 target_link_libraries(
-    VaneEngine PUBLIC
+    VaneEngine PRIVATE
     glad vane_common SDL3::SDL3-shared
     assimp::assimp # vanevm::vanevm
 )
 
-file(
-    COPY "${IMPORTED_LIBRARY_DIR}/libglad.so"
-         "${IMPORTED_LIBRARY_DIR}/libglm.so"
-    DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
-)
-
-add_custom_command(
-    OUTPUT vdata.pkg DEPENDS vpkg COMMENT "Packing root vdata.pkg"
-    COMMAND $<TARGET_FILE:vpkg> -i ${CMAKE_SOURCE_DIR}/vane -o ${CMAKE_INSTALL_PREFIX}/vdata.pkg
-)
-add_custom_target(GenerateFiles ALL DEPENDS vdata.pkg)
-
-
-install(TARGETS VaneEngine RUNTIME DESTINATION ".")
-# install(TARGETS SDL3-shared LIBRARY DESTINATION "bin")
-install(FILES $<TARGET_RUNTIME_DLLS:VaneEngine> DESTINATION "bin")
-
 install(
-    FILES
-        "${IMPORTED_LIBRARY_DIR}/libassimp.so"
-        "${IMPORTED_LIBRARY_DIR}/libassimp.so.6"
-        "${IMPORTED_LIBRARY_DIR}/libassimp.so.6.0.2"
-        "${IMPORTED_LIBRARY_DIR}/libglad.so"
-        "${IMPORTED_LIBRARY_DIR}/libglm.so"
-    DESTINATION "bin"
+    TARGETS VaneEngine
+    RUNTIME DESTINATION "."
 )
 
-install(FILES ${resolved_deps} DESTINATION ${CMAKE_INSTALL_BINDIR})
 
+file(GLOB VANE_RUNTIME_LIBS "${VANE_EXTERN_LIBRARY_DIR}/*.so*")
+install(FILES ${VANE_RUNTIME_LIBS} DESTINATION "bin")
+# add_custom_command(
+#     OUTPUT vdata.pkg DEPENDS vpkg COMMENT "Packing root vdata.pkg"
+#     COMMAND $<TARGET_FILE:vpkg> -i ${CMAKE_SOURCE_DIR}/vane -o ${CMAKE_INSTALL_PREFIX}/vdata.pkg
+# )
+# add_custom_target(GenerateFiles ALL DEPENDS vdata.pkg)

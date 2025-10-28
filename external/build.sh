@@ -2,52 +2,36 @@
 export CMAKE_POLICY_VERSION_MINIMUM=3.21
 thisdir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
+buildtype=$1
+installpath=$thisdir/build/${1,,}
+libpath=$thisdir/install/${1,,}
+
 buildmd()
 {
     cd $thisdir
-
-    local buildtype=$1
-    local srcpath=submodule/$2
-    local buildpath=build
-    local installpath=install
-
-    if [ "$1" = "Release" ]; then
-        buildpath=$thisdir/build/$2
-        installpath=$thisdir/install
-    elif [ "$1" = "Debug" ]; then
-        buildpath=$thisdir/build_d/$2
-        installpath=$thisdir/install_d
-    else
-        echo "Incorrect usage: $thisdir"
-        exit 1
-    fi
-
-    shift 2
+    local projectname=$1
+    local srcpath=$thisdir/submodule/$projectname
+    local cmakepath=$thisdir/build/$projectname
+    shift 1
     local defines=$@
 
-    mkdir -p $buildpath
-    cmake -S $srcpath -B $buildpath -DCMAKE_BUILD_TYPE=$buildtype $defines
-    cmake --build $buildpath -j8
-    cmake --install $buildpath --prefix $installpath
+    mkdir -p $cmakepath
+    cmake -S $srcpath -B $cmakepath -DCMAKE_BUILD_TYPE=$buildtype $defines
+    cmake --build $cmakepath -j8
+    cmake --install $cmakepath --prefix $installpath
 }
 
-arg0=$1
-if [ "$#" = "0" ]; then
-    arg0=Release
-fi
 
-buildmd $arg0 assimp -DBUILD_SHARED_LIBS=ON -DASSIMP_BUILD_ZLIB=OFF
-buildmd $arg0 glad -DBUILD_SHARED_LIBS=ON
-buildmd $arg0 glm -DBUILD_SHARED_LIBS=ON -DGLM_BUILD_TESTS=OFF
-buildmd $arg0 SDL -DSDL_STATIC=OFF -DSDL_SHARED=ON -DSDL_LIBC=ON
-buildmd $arg0 vanelang
+buildmd assimp -DBUILD_SHARED_LIBS=ON -DASSIMP_BUILD_ZLIB=OFF
+# buildmd glad -DBUILD_SHARED_LIBS=OFF
+# buildmd glm -DBUILD_SHARED_LIBS=OFF -DGLM_BUILD_TESTS=OFF
+# buildmd SDL -DSDL_STATIC=OFF -DSDL_SHARED=ON -DSDL_LIBC=ON
+# buildmd vanelang
 
-
-tccpath=$thisdir/install
-if [ ! -d "$tccpath/bin/tcc" ]; then
-    cd ./submodule/tinycc && ./configure --prefix=$tccpath --ext-prefix=$tccpath
-    make && make install
-fi
+# if [ ! -d "$installpath/bin/tcc" ]; then
+#     cd ./submodule/tinycc && ./configure --prefix=$installpath --ext-prefix=$installpath
+#     make && make install
+# fi
 
 
 
@@ -56,104 +40,3 @@ fi
 # ./util/git-sync-deps
 # mkdir -p build && cd build
 # cmake -G Ninja -DCMAKE_BUILD_TYPE=$1 -DCMAKE_INSTALL_PREFIX=$thisdir/install_shaderc ../
-
-# temp=$thisdir/install/.lib
-# actual=$thisdir/install/lib
-
-# mkdir -p $temp && cp $actual/*.{a,so}* $temp/
-# rm -rf $actual && mv $temp $actual
-# rm -rf $thisdir/install/share
-
-
-
-# #!/bin/bash
-# export CMAKE_POLICY_VERSION_MINIMUM=3.21
-# thisdir=$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-
-# buildmd()
-# {
-#     cd $thisdir
-#     local buildtype=$1
-#     local srcpath=$2
-#     local buildpath=$3
-#     local installpath=$buildtype
-
-#     mkdir -p $buildpath
-
-#     shift 2
-#     cmake $@ -DCMAKE_BUILD_TYPE=$buildtype -DCMAKE_INSTALL_PREFIX=$installpath \
-#           $defines -S $srcpath -B $buildpath
-#     cmake --build $buildpath -j8
-#     cmake --install $buildpath
-
-
-#     cd $thisdir
-#     local buildtype=$1
-#     local buildpath=$thisdir/build/cmake_$buildtype
-#     local installpath=$thisdir/build/vane$buildtype
-
-#     mkdir -p {$cmake_path,$vane_path}
-
-#     cmake -DCMAKE_BUILD_TYPE=$buildtype -DCMAKE_INSTALL_PREFIX=$installpath \
-#           -S $thisdir -B $cmake_path
-#         #   -DCMAKE_TOOLCHAIN_FILE=x86_64-w64-mingw32.cmake
-
-#     cmake --build $cmake_path -j8
-#     cmake --install $cmake_path
-# }
-
-# buildmd Debug external/submodule/SDL3 external/build/SDL3
-
-# if [ "$#" = "0" ]; then
-#     exit 1
-# fi
-
-
-# bdext=0
-# bddbg=0
-# bdrel=0
-
-# if [ "$#" = 0 ]; then
-#     bddbg=1;
-# fi
-
-# for arg in "$@"; do
-#     if [ "$arg" = "--external" ]; then
-#         bdext=1
-#     fi
-#     if [ "$arg" = "--debug" ]; then
-#         bddbg=1
-#     fi
-#     if [ "$arg" = "--release" ]; then
-#         bdrel=1
-#     fi
-#     if [ "$arg" = "--full" ]; then
-#         bdext=1
-#         bddbg=1
-#         bdrel=1
-#     fi
-# done
-
-
-# if [ "$bdext" = "1" ]; then
-#     if [ "$bddbg" = "1" ]; then
-#         external/build.sh Debug
-#     fi
-#     if [ "$bdrel" = "1" ]; then
-#         external/build.sh Debug
-#     fi
-# fi
-
-# if [ "$bddbg" = "1" ]; then
-#     vanebuild Debug
-#     cd ./build/vane_Debug/
-#     ./bin/vpkg -i ./engine -o engine.pkg
-#     # rm -rf ./engine
-# fi
-
-# if [ "$bdrel" = "1" ]; then
-#     vanebuild Release
-#     cd ./build/vane_Release/
-#     ./bin/vpkg -i ./engine -o engine.pkg
-#     # rm -rf ./engine
-# fi

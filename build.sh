@@ -10,20 +10,26 @@ thisdir=$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 vanebuild()
 {
-    echo "[vanebuild] buildtype=$1"
+    local buildtype=$1
+    local cmakepath=$thisdir/build/cmake/$1
+    local installpath=$thisdir/build/${1,,}
+    local libpath=$thisdir/external/install
 
-    local buildtype=$1 # lowercase
-    local buildpath=$thisdir/build/cmake/${buildtype,,}
-    local installpath=$thisdir/build/${buildtype,,}
+    if [ "$1" = "Debug" ]; then
+        libpath+=_d
+        # installpath+=_d
+    fi
 
-    mkdir -p {$buildpath,$installpath}
 
-    cmake -DCMAKE_BUILD_TYPE=$buildtype -DCMAKE_INSTALL_PREFIX=$installpath \
-          -S $thisdir -B $buildpath
+
+    mkdir -p {$cmakepath,$installpath}
+    cmake -DCMAKE_BUILD_TYPE=$buildtype -S $thisdir -B $cmakepath
         #   -DCMAKE_TOOLCHAIN_FILE=x86_64-w64-mingw32.cmake
 
-    cmake --build $buildpath -j8
-    cmake --install $buildpath
+    cmake --build $cmakepath -j8
+    cmake --install $cmakepath --prefix $installpath
+
+    cp $libpath/lib/*.so.* $installpath/bin/
 }
 
 usage_error()
