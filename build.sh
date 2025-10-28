@@ -1,6 +1,8 @@
 #!/bin/bash
 export CMAKE_POLICY_VERSION_MINIMUM=3.21
 thisdir=$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+version_filename="$thisdir/version.txt"
+version=$(<"$version_filename")
 
 # git submodule add https://github.com/assimp/assimp.git external/submodule/assimp
 # git submodule add https://github.com/mellic03/glad.git external/submodule/glad
@@ -12,7 +14,7 @@ vanebuild()
 {
     local buildtype=$1
     local cmakepath=$thisdir/build/cmake/${1,,}
-    local installpath=$thisdir/build/${1,,}
+    local installpath=$thisdir/build/${1,,}-$version
     local libpath=$thisdir/external/install/${1,,}
 
     mkdir -p {$cmakepath,$installpath}

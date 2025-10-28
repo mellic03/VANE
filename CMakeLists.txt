@@ -1,16 +1,14 @@
 cmake_minimum_required(VERSION 3.21)
 
 file(READ "${CMAKE_SOURCE_DIR}/version.txt" VANE_VERSION)
-set(VANE_VERSION 0.0.1)
 add_definitions(-DVANE_VERSION="${VANE_VERSION}")
 
 project(vane VERSION ${VANE_VERSION})
 
 string(TOLOWER ${CMAKE_BUILD_TYPE} VANE_BUILD_TYPE)
-set(VANE_INSTALL_DIR "${CMAKE_SOURCE_DIR}/build/${VANE_BUILD_TYPE}")
-set(VANE_INSTALL_INCLUDE_DIR "${VANE_INSTALL_DIR}/include")
-set(VANE_INSTALL_LIBRARY_DIR "${VANE_INSTALL_DIR}/lib")
-
+# set(VANE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}-${VANE_VERSION}")
+# set(VANE_INSTALL_INCLUDE_DIR "${VANE_INSTALL_DIR}/include")
+# set(VANE_INSTALL_LIBRARY_DIR "${VANE_INSTALL_DIR}/lib")
 set(VANE_EXTERN_INSTALL_DIR "${CMAKE_SOURCE_DIR}/external/install/${VANE_BUILD_TYPE}")
 set(VANE_EXTERN_INCLUDE_DIR "${VANE_EXTERN_INSTALL_DIR}/include")
 set(VANE_EXTERN_LIBRARY_DIR "${VANE_EXTERN_INSTALL_DIR}/lib")
@@ -40,14 +38,14 @@ set_target_properties(glm PROPERTIES
 
 add_subdirectory("${CMAKE_SOURCE_DIR}/src/")
 
-add_executable(VaneEngine "${CMAKE_SOURCE_DIR}/src/main.cpp")
-set_target_properties(VaneEngine PROPERTIES OUTPUT_NAME "vane")
-target_compile_features(VaneEngine PUBLIC cxx_std_20)
-target_link_libraries(VaneEngine PRIVATE
+add_executable(${PROJECT_NAME} "${CMAKE_SOURCE_DIR}/src/main.cpp")
+# set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "vane")
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
+target_link_libraries(${PROJECT_NAME} PRIVATE
     glad vane_common SDL3::SDL3-shared
     # assimp::assimp # vanevm::vanevm
 )
 
 file(GLOB VANE_RUNTIME_LIBS "${VANE_EXTERN_LIBRARY_DIR}/*.so*")
 install(FILES ${VANE_RUNTIME_LIBS} DESTINATION "bin")
-install(TARGETS VaneEngine RUNTIME DESTINATION ".")
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ".")
