@@ -3,7 +3,7 @@ export CMAKE_POLICY_VERSION_MINIMUM=3.21
 thisdir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 buildtype=$1
-installpath=$thisdir/build/${1,,}
+installpath=$thisdir/install/${1,,}
 libpath=$thisdir/install/${1,,}
 
 buildmd()
@@ -11,7 +11,7 @@ buildmd()
     cd $thisdir
     local projectname=$1
     local srcpath=$thisdir/submodule/$projectname
-    local cmakepath=$thisdir/build/$projectname
+    local cmakepath=$thisdir/build/${buildtype,,}/$projectname
     shift 1
     local defines=$@
 
@@ -22,16 +22,16 @@ buildmd()
 }
 
 
-buildmd assimp -DBUILD_SHARED_LIBS=ON -DASSIMP_BUILD_ZLIB=OFF
-# buildmd glad -DBUILD_SHARED_LIBS=OFF
-# buildmd glm -DBUILD_SHARED_LIBS=OFF -DGLM_BUILD_TESTS=OFF
-# buildmd SDL -DSDL_STATIC=OFF -DSDL_SHARED=ON -DSDL_LIBC=ON
-# buildmd vanelang
+# buildmd assimp -DBUILD_SHARED_LIBS=ON -DASSIMP_BUILD_ZLIB=OFF
+buildmd glad -DBUILD_SHARED_LIBS=OFF
+buildmd glm -DBUILD_SHARED_LIBS=OFF -DGLM_BUILD_TESTS=OFF
+buildmd SDL -DSDL_STATIC=OFF -DSDL_SHARED=ON -DSDL_LIBC=ON
+buildmd vanelang
 
-# if [ ! -d "$installpath/bin/tcc" ]; then
-#     cd ./submodule/tinycc && ./configure --prefix=$installpath --ext-prefix=$installpath
-#     make && make install
-# fi
+if [ ! -d "$installpath/bin/tcc" ]; then
+    cd ./submodule/tinycc && ./configure --prefix=$installpath --ext-prefix=$installpath
+    make && make install
+fi
 
 
 

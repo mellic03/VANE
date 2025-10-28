@@ -16,49 +16,49 @@ namespace fs = std::filesystem;
 
 
 
-#include <assimp/Importer.hpp>      // C++ importer interface
-#include <assimp/scene.h>           // Output data structure
-#include <assimp/postprocess.h>     // Post processing flags
+// #include <assimp/Importer.hpp>      // C++ importer interface
+// #include <assimp/scene.h>           // Output data structure
+// #include <assimp/postprocess.h>     // Post processing flags
 
-bool DoTheImportThing( const std::string &pFile )
-{
-    // if (pFile[0]) {  } return true;
+// bool DoTheImportThing( const std::string &pFile )
+// {
+//     // if (pFile[0]) {  } return true;
 
-    // Create an instance of the Importer class
-    Assimp::Importer importer;
+//     // Create an instance of the Importer class
+//     Assimp::Importer importer;
 
-    // And have it read the given file with some example postprocessing
-    // Usually - if speed is not the most important aspect for you - you'll
-    // probably to request more postprocessing than we do in this example.
-    const aiScene* scene = importer.ReadFile( pFile,
-        aiProcess_CalcTangentSpace       |
-        aiProcess_Triangulate            |
-        aiProcess_JoinIdenticalVertices  |
-        aiProcess_SortByPType);
+//     // And have it read the given file with some example postprocessing
+//     // Usually - if speed is not the most important aspect for you - you'll
+//     // probably to request more postprocessing than we do in this example.
+//     const aiScene* scene = importer.ReadFile( pFile,
+//         aiProcess_CalcTangentSpace       |
+//         aiProcess_Triangulate            |
+//         aiProcess_JoinIdenticalVertices  |
+//         aiProcess_SortByPType);
 
-    // If the import failed, report it
-    if (nullptr == scene)
-    {
-        printf("Import error: %s\n", importer.GetErrorString());
-        return false;
-    }
+//     // If the import failed, report it
+//     if (nullptr == scene)
+//     {
+//         printf("Import error: %s\n", importer.GetErrorString());
+//         return false;
+//     }
 
-    syslog log("DoTheImportThing");
+//     syslog log("DoTheImportThing");
 
-    log("mNumAnimations: %lu", scene->mNumAnimations);
-    log("mNumLights: %lu", scene->mNumLights);
-    log("mNumMeshes: %lu", scene->mNumMeshes);
-    log("mNumMaterials: %lu", scene->mNumMaterials);
-    log("mNumSkeletons: %lu", scene->mNumSkeletons);
-    log("mNumTextures: %lu", scene->mNumTextures);
+//     log("mNumAnimations: %lu", scene->mNumAnimations);
+//     log("mNumLights: %lu", scene->mNumLights);
+//     log("mNumMeshes: %lu", scene->mNumMeshes);
+//     log("mNumMaterials: %lu", scene->mNumMaterials);
+//     log("mNumSkeletons: %lu", scene->mNumSkeletons);
+//     log("mNumTextures: %lu", scene->mNumTextures);
 
-    // printf(scene.)
-    // Now we can access the file's contents.
-    // DoTheSceneProcessing( scene);
+//     // printf(scene.)
+//     // Now we can access the file's contents.
+//     // DoTheSceneProcessing( scene);
 
-    // We're done. Everything will be cleaned up by the importer destructor
-    return true;
-}
+//     // We're done. Everything will be cleaned up by the importer destructor
+//     return true;
+// }
 
 
 
@@ -114,7 +114,7 @@ int main( int argc, char **argv )
     // std::system(cmd.c_str());
     json_test();
 
-    DoTheImportThing("engine/model/unit-sphere.gltf");
+    // DoTheImportThing("engine/model/unit-sphere.gltf");
 
 
     Platform platform;

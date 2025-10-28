@@ -13,14 +13,7 @@ vanebuild()
     local buildtype=$1
     local cmakepath=$thisdir/build/cmake/$1
     local installpath=$thisdir/build/${1,,}
-    local libpath=$thisdir/external/install
-
-    if [ "$1" = "Debug" ]; then
-        libpath+=_d
-        # installpath+=_d
-    fi
-
-
+    local libpath=$thisdir/external/install/${1,,}
 
     mkdir -p {$cmakepath,$installpath}
     cmake -DCMAKE_BUILD_TYPE=$buildtype -S $thisdir -B $cmakepath
